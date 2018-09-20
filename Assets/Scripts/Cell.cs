@@ -45,7 +45,7 @@ namespace LittleWorld
         {
             Array values = Enum.GetValues(typeof(EnvironmentType));
             System.Random random = new System.Random();
-            EnvironmentType randomEnvironment = (EnvironmentType)values.GetValue(random.Next(values.Length));
+            EnvironmentType randomEnvironment = (EnvironmentType)values.GetValue(UnityEngine.Random.Range(0, values.Length));
             _environmentType = randomEnvironment;
         }
 
