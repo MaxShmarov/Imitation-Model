@@ -22,6 +22,7 @@ namespace LittleWorld
 
         private void Awake()
         {
+            _currentWeather = new CurrentWeather();
             _weather = new Weather();
         }
 
