@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using LittleWorld.UI;
-
+using LittleWorld.Common;
 
 namespace LittleWorld.Controllers
 {
@@ -59,14 +59,21 @@ namespace LittleWorld.Controllers
             _sizeX = int.Parse(_inputX.text);
             _sizeZ = int.Parse(_inputZ.text);
 
-            if (_sizeX <= 0 && _sizeZ <= 0)
-                return;
-            else
+            if (_sizeX < Config.MinCellCount || _sizeX > Config.MaxCellCount)
             {
-                _gameController.GenerateWorld(_sizeX, _sizeZ);
-                ShowStartScreen(false);
-                ClearScreen();              
-            }         
+                _inputX.text = string.Empty;
+                return;
+            }
+                
+            if (_sizeZ < Config.MinCellCount || _sizeZ > Config.MaxCellCount)
+            {
+                _inputZ.text = string.Empty;
+                return;
+            }
+
+            _gameController.GenerateWorld(_sizeX, _sizeZ);
+            ShowStartScreen(false);
+            ClearScreen();
         }
 
         public void BackButtonClickHandler()
