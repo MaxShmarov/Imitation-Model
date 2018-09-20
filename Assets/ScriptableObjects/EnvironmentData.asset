@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5596d62731799944b6c562aa08bf2de, type: 3}
+  m_Name: EnvironmentData
+  m_EditorClassIdentifier: 
+  Environments:
+  - Name: Field
+    Type: 0
+    Color: {r: 0.3228491, g: 0.764151, b: 0.26312745, a: 1}
+    GrassMayGrow: 1
+    EnvironmentMaterial: {fileID: 2100000, guid: 02093e44a96a8104caf641c589abe9bb,
+      type: 2}
+  - Name: Mountain
+    Type: 1
+    Color: {r: 0.6415094, g: 0.38040295, b: 0.17853329, a: 1}
+    GrassMayGrow: 0
+    EnvironmentMaterial: {fileID: 2100000, guid: 02093e44a96a8104caf641c589abe9bb,
+      type: 2}
+  - Name: Lake
+    Type: 2
+    Color: {r: 0.22432362, g: 0.3096824, b: 0.6698113, a: 1}
+    GrassMayGrow: 0
+    EnvironmentMaterial: {fileID: 2100000, guid: 02093e44a96a8104caf641c589abe9bb,
+      type: 2}

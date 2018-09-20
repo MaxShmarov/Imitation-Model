@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using LittleWorld.Common;
 
 namespace LittleWorld
 {
@@ -22,7 +22,7 @@ namespace LittleWorld
         {
             if (_weather.ContainsKey(_rainy))
             {
-                var randomValue = GetRandomValue();
+                var randomValue = Config.GetRandomValue(_minWeatherIntensity, _maxWeatherIntensity);
                 _weather[_rainy] = randomValue;
                 if (randomValue == _maxWeatherIntensity)
                 {
@@ -38,7 +38,7 @@ namespace LittleWorld
 
             if (_weather.ContainsKey(WeatherType.Sunny))
             {
-                var randomValue = GetRandomValue();
+                var randomValue = Config.GetRandomValue(_minWeatherIntensity, _maxWeatherIntensity);
                 _weather[_sunny] = randomValue;
                 if (randomValue == _maxWeatherIntensity)
                 {
@@ -52,10 +52,7 @@ namespace LittleWorld
             }                
         }
 
-        private int GetRandomValue()
-        {
-            return Random.Range(_minWeatherIntensity, _maxWeatherIntensity + 1);
-        }
+        
 
         private void AddWeatherToDictionary(WeatherType type)
         {

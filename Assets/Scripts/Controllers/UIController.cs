@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using LittleWorld.UI;
 
 
 namespace LittleWorld.Controllers
@@ -16,11 +17,17 @@ namespace LittleWorld.Controllers
         [SerializeField]
         private RectTransform _inputPanel;
         [SerializeField]
+        private ConventionsItem _conventionPrefab;
+        [SerializeField]
+        private ScrollRect _conventions;
+        [SerializeField]
         private InputField _inputX;
         [SerializeField]
         private InputField _inputZ;
         [SerializeField]
         private Button _nextStepButton;
+        [SerializeField]
+        private Button _backStepButton;
 
         private int _sizeX;
         private int _sizeZ;
@@ -30,7 +37,18 @@ namespace LittleWorld.Controllers
         {
             _inputX.contentType = InputField.ContentType.IntegerNumber;
             _inputZ.contentType = InputField.ContentType.IntegerNumber;
-            ShowStartScreen(true);           
+        }
+
+        public void InitUI()
+        {
+            ClearScreen();
+
+            foreach (var environment in _gameController.Environments)
+            {
+                var convention = Instantiate(_conventionPrefab, _conventions.content);
+                convention.Init(environment.Color, environment.Name);
+            }           
+            ShowStartScreen(true);
         }
 
         public void GenerateWorldHandler()
@@ -46,8 +64,26 @@ namespace LittleWorld.Controllers
             else
             {
                 _gameController.GenerateWorld(_sizeX, _sizeZ);
+                ShowStartScreen(false);
+                ClearScreen();              
+            }         
+        }
+
+        public void BackButtonClickHandler()
+        {
+            _gameController.ResetWorld();
+        }
+
+        private void ClearScreen()
+        {
+            while (_conventions.content.childCount > 0)
+            {
+                Transform child = _conventions.content.GetChild(0);
+                child.parent = null;
+                Destroy(child.gameObject);
             }
-            ShowStartScreen(false);
+            _inputX.text = string.Empty;
+            _inputZ.text = string.Empty;
         }
 
         private void ShowStartScreen(bool enabled)
@@ -55,6 +91,7 @@ namespace LittleWorld.Controllers
             _background.gameObject.SetActive(enabled);
             _inputPanel.gameObject.SetActive(enabled);
             _nextStepButton.gameObject.SetActive(!enabled);
+            _backStepButton.gameObject.SetActive(!enabled);
         }
 
         public void NextStepClickHandler()
