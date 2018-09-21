@@ -31,10 +31,11 @@ namespace LittleWorld.Controllers
 
         private int _sizeX;
         private int _sizeZ;
-
+        private Database _database;
 
         private void Start()
         {
+            _database = Database.Instance;
             _inputX.contentType = InputField.ContentType.IntegerNumber;
             _inputZ.contentType = InputField.ContentType.IntegerNumber;
         }
@@ -42,8 +43,9 @@ namespace LittleWorld.Controllers
         public void InitUI()
         {
             ClearScreen();
+            var _environments = _database.GetEnvironmentsData();
 
-            foreach (var environment in _gameController.Environments)
+            foreach (var environment in _environments)
             {
                 var convention = Instantiate(_conventionPrefab, _conventions.content);
                 convention.Init(environment.Color, environment.Name);
@@ -79,6 +81,7 @@ namespace LittleWorld.Controllers
         public void BackButtonClickHandler()
         {
             _gameController.ResetWorld();
+            InitUI();
         }
 
         private void ClearScreen()

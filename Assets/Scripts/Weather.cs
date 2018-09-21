@@ -11,52 +11,27 @@ namespace LittleWorld
         private WeatherType _rainy = WeatherType.Rainy;
         private WeatherType _sunny = WeatherType.Sunny;
 
-        private Dictionary<WeatherType, int> _weather = new Dictionary<WeatherType, int>();
-
-        public int GetWeatherValueByType(WeatherType type)
+        public CurrentWeather GetRandomWeather()
         {
-            return _weather[type];
-        }
+            CurrentWeather newWeather = new CurrentWeather();
+            int rainyIntensity, sunnyIntensity = _minWeatherIntensity;
 
-        public void UpdateWeather()
-        {
-            if (_weather.ContainsKey(_rainy))
+            rainyIntensity = Config.GetRandomValue(_minWeatherIntensity, _maxWeatherIntensity, true);
+            if (rainyIntensity == _maxWeatherIntensity)
             {
-                var randomValue = Config.GetRandomValue(_minWeatherIntensity, _maxWeatherIntensity);
-                _weather[_rainy] = randomValue;
-                if (randomValue == _maxWeatherIntensity)
-                {
-                    _weather[_sunny] = _minWeatherIntensity;
-                    return;
-                }
+                sunnyIntensity = _minWeatherIntensity;                
             }
             else
             {
-                AddWeatherToDictionary(_rainy);
-            }
-                
-
-            if (_weather.ContainsKey(WeatherType.Sunny))
-            {
-                var randomValue = Config.GetRandomValue(_minWeatherIntensity, _maxWeatherIntensity);
-                _weather[_sunny] = randomValue;
-                if (randomValue == _maxWeatherIntensity)
+                sunnyIntensity = Config.GetRandomValue(_minWeatherIntensity, _maxWeatherIntensity, true);
+                if (sunnyIntensity == _maxWeatherIntensity)
                 {
-                    _weather[_rainy] = _minWeatherIntensity;
-                    return;
+                    rainyIntensity = _minWeatherIntensity;                   
                 }
-            }              
-            else
-            {
-                AddWeatherToDictionary(_sunny);
-            }                
-        }
-
-        
-
-        private void AddWeatherToDictionary(WeatherType type)
-        {
-            _weather.Add(type, _minWeatherIntensity);
+            }
+            newWeather.RainyIntensity = rainyIntensity;
+            newWeather.SunnyIntensity = sunnyIntensity;
+            return newWeather;
         }
     }
 }

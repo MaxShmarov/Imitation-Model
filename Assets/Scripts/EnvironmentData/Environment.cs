@@ -10,6 +10,5 @@ namespace LittleWorld
         public EnvironmentType Type;
         public Color Color;
         public bool GrassMayGrow;
-        public Material EnvironmentMaterial;
     }
 }

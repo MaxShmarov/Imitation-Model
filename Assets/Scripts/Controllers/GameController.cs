@@ -1,6 +1,8 @@
 ﻿using LittleWorld.Common;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
+using System.Threading;
 
 namespace LittleWorld.Controllers
 {
@@ -9,19 +11,17 @@ namespace LittleWorld.Controllers
         [SerializeField]
         private UIController _uiController;
         [SerializeField]
-        private Transform _parentForCell;
+        private Cell _cellPrefab;
         [SerializeField]
-        private EnvironmentDatabase _environmentDB;
+        private Transform _parentForCell;
 
-        public List<Environment> Environments { get; private set; }
+        private Database _database;
+
+        private Stopwatch stopwatch = new Stopwatch();
+
         private const float _cellOffset = 1.1f;
         private Cell[,] _matrix;
         private Vector2Int _matrixSize;
-
-        private void Awake()
-        {
-            Environments = _environmentDB.Environments;
-        }
 
         public void NextStep()
         {
@@ -30,33 +30,41 @@ namespace LittleWorld.Controllers
 
         private void Start()
         {
-            _uiController.InitUI();
+            _uiController.InitUI();           
+            _database = Database.Instance;
         }
 
         public void GenerateWorld(int x, int z)
         {
+            stopwatch.Start();
+
             _matrixSize = new Vector2Int(x, z);
-            _matrix = new Cell[_matrixSize.x, _matrixSize.y];
+            _matrix = new Cell[_matrixSize.x, _matrixSize.y];            
             for (int i = 0; i < x; i++)
             {
                 for (int j = 0; j < z; j++)
                 {
                     Vector2Int index = new Vector2Int(i, j);
 
-                    GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    go.transform.SetParent(_parentForCell);
+                    var cell = Instantiate(_cellPrefab, _parentForCell);
 
-                    Cell cell = go.AddComponent<Cell>();
                     Vector3 cellPos = new Vector3(i * _cellOffset, 0, j * _cellOffset);
                     string cellName = string.Format("Cell [{0}][{1}]", i, j);
-                    int randomEnvironmentNumber = Config.GetRandomValue(0, Environments.Count - 1);
-                    Environment cellEnvironment = Environments[randomEnvironmentNumber];
-                    cell.Init(cellPos, cellName, cellEnvironment, index);
-                    
+                  //  Environment cellEnvironment = _database.GetRandomEnvironment();
+                    cell.Init(cellPos, cellName, /*cellEnvironment,*/ index);
+
                     _matrix[index.x, index.y] = cell;
-                    
-                }            
+                }
             }
+
+            stopwatch.Stop();
+            // Get the elapsed time as a TimeSpan value.
+            var ts = stopwatch.Elapsed;
+            // Format and display the TimeSpan value.
+            string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                ts.Hours, ts.Minutes, ts.Seconds,
+                ts.Milliseconds / 10);
+            UnityEngine.Debug.LogError(elapsedTime);
         }
 
         public void ResetWorld()
@@ -68,7 +76,6 @@ namespace LittleWorld.Controllers
                     Destroy(_matrix[i, j].gameObject);
                 }
             }
-            _uiController.InitUI();
         }
     }
 }
