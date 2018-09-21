@@ -926,7 +926,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 20
+  far clip plane: 40
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -2515,7 +2515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiController: {fileID: 1266217884}
-  _cellPrefab: {fileID: 114346144298815452, guid: 69112c249beba374cbd2c6cf0f752a35,
+  _cellPrefab: {fileID: 114280051469207872, guid: fabfec86f4bbd1245aaeb1d001726343,
     type: 2}
   _parentForCell: {fileID: 1285339971}
 --- !u!1 &1547344321

@@ -44,7 +44,6 @@ namespace LittleWorld.Controllers
 
         private IEnumerator GenerateGrid()
         {
-            yield return null;
             stopwatch.Start();                        
             for (int i = 0; i < _matrixSize.x; i++)
             {
@@ -56,12 +55,10 @@ namespace LittleWorld.Controllers
 
                     Vector3 cellPos = new Vector3(i * _cellOffset, 0, j * _cellOffset);
                     string cellName = string.Format("Cell [{0}][{1}]", i, j);
-                  //  Environment cellEnvironment = _database.GetRandomEnvironment();
-                    cell.Init(cellPos, cellName, /*cellEnvironment,*/ index);
+                    cell.Init(cellPos, cellName, index);
 
                     _matrix[index.x, index.y] = cell;
                 }
-                yield return null;
             }
             yield return null;
 

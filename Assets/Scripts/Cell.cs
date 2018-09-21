@@ -18,7 +18,7 @@ namespace LittleWorld
         [SerializeField]
         private CellUI _cellUI;
 
-        private Vector3 _defaultCellSize = new Vector3(1f, 0.1f, 1f);
+        private Vector3 _defaultCellSize = new Vector3(1f, 1f, 1f);
         private Environment _environment;
         private CurrentWeather _currentWeather;
         private Transform _transform;
