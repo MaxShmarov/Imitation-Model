@@ -295,6 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _renderer: {fileID: 23351352532395616}
   _cellUI: {fileID: 114335245168022604}
+  _outline: {fileID: 0}
 --- !u!114 &114378225604372218
 MonoBehaviour:
   m_ObjectHideFlags: 1

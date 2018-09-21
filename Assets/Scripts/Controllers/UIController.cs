@@ -89,7 +89,7 @@ namespace LittleWorld.Controllers
             while (_conventions.content.childCount > 0)
             {
                 Transform child = _conventions.content.GetChild(0);
-                child.parent = null;
+                child.SetParent(null);
                 Destroy(child.gameObject);
             }
             _inputX.text = string.Empty;

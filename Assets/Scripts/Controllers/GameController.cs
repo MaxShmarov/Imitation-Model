@@ -16,29 +16,42 @@ namespace LittleWorld.Controllers
         [SerializeField]
         private Transform _parentForCell;
 
-        private Database _database;
-
         private Stopwatch stopwatch = new Stopwatch();
 
         private const float _cellOffset = 1.1f;
         private Cell[,] _matrix;
         private Vector2Int _matrixSize;
+        private Cell _currentCell;
 
-        public void NextStep()
+        private void OnEnable()
         {
-            EventManager.Trigger(Config.NextStep);
+            EventManager<Cell>.StartListening("Select", SelectCell);
+        }
+
+        private void OnDisable()
+        {
+            EventManager<Cell>.StopListening("Select", SelectCell);
+        }
+
+        private void SelectCell(Cell cell)
+        {
+            if (_currentCell != null)
+                _currentCell.Select(false);
+            _currentCell = cell;
+            _currentCell.Select(true);
         }
 
         private void Start()
         {
             _uiController.InitUI();           
-            _database = Database.Instance;
         }
 
         public void GenerateWorld(int x, int z)
         {
             _matrixSize = new Vector2Int(x, z);
             _matrix = new Cell[_matrixSize.x, _matrixSize.y];
+            CameraHandler.Instance.SetLimitsX(new Vector2Int(-2, z + 2));
+            CameraHandler.Instance.SetLimitsZ(new Vector2Int(-3, z + 3));
             StartCoroutine("GenerateGrid");
         }
 
@@ -81,6 +94,11 @@ namespace LittleWorld.Controllers
                     Destroy(_matrix[i, j].gameObject);
                 }
             }
+        }
+
+        public void NextStep()
+        {
+            EventManager.Trigger(Config.NextStep);
         }
     }
 }

@@ -50,8 +50,6 @@ namespace LittleWorld.Common
 
     public static class EventManager<T>
     {
-        private static string _consoleColor = "#00ffffff";
-
         private static Dictionary<string, Action<T>> _eventTable = new Dictionary<string, Action<T>>();
 
         public static void StartListening(string eventName, Action<T> handler)
@@ -97,8 +95,6 @@ namespace LittleWorld.Common
 
     public static class EventManager<T, U>
     {
-        private static string _consoleColor = "#00ffffff";
-
         private static Dictionary<string, Action<T, U>> _eventTable = new Dictionary<string, Action<T, U>>();
 
         public static void StartListening(string eventName, Action<T, U> handler)

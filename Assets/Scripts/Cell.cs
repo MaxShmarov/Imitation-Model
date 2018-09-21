@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using LittleWorld.Common;
 using LittleWorld.UI;
+using cakeslice;
 
 namespace LittleWorld
 {
@@ -11,12 +13,14 @@ namespace LittleWorld
         public int SunnyIntensity;
     }
 
-    public class Cell : MonoBehaviour
+    public class Cell : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField]
         private Renderer _renderer;
         [SerializeField]
         private CellUI _cellUI;
+        [SerializeField]
+        private Outline _outline;
 
         private Vector3 _defaultCellSize = new Vector3(1f, 1f, 1f);
         private Environment _environment;
@@ -40,7 +44,7 @@ namespace LittleWorld
             EventManager.StopListening(Config.NextStep, UpdateWeatherVariable);
         }
 
-        public void Init(Vector3 position, string cellName,/* Environment environment,*/ Vector2Int index)
+        public void Init(Vector3 position, string cellName, Vector2Int index)
         {
             _transform = transform;
             _transform.localScale = _defaultCellSize;
@@ -49,7 +53,8 @@ namespace LittleWorld
             _environment = Database.Instance.GetRandomEnvironment();
             _positionInMatrix = index;
             EnvironmentFromData();
-            UpdateWeatherVariable();          
+            UpdateWeatherVariable();
+            _outline.enabled = false;
         }
 
         private void EnvironmentFromData()
@@ -63,6 +68,16 @@ namespace LittleWorld
         {
             _currentWeather = Database.Instance.Weather.GetRandomWeather();
             _cellUI.UpdateValues(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity);
+        }
+
+        public void Select(bool selected)
+        {
+            _outline.enabled = selected;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            EventManager<Cell>.Trigger("Select", this);     
         }
     }
 }

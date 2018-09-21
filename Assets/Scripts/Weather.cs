@@ -8,9 +8,6 @@ namespace LittleWorld
         private const int _minWeatherIntensity = 0;
         private const int _maxWeatherIntensity = 3;
 
-        private WeatherType _rainy = WeatherType.Rainy;
-        private WeatherType _sunny = WeatherType.Sunny;
-
         public CurrentWeather GetRandomWeather()
         {
             CurrentWeather newWeather = new CurrentWeather();
