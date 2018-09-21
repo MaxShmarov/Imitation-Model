@@ -2,7 +2,7 @@
 using UnityEngine;
 using Lean.Touch;
 
-namespace AlphaBunker.Map
+namespace LittleWorld
 {
     public class CameraHandler : MonoBehaviour
     {

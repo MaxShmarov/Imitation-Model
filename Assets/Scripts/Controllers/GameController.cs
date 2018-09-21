@@ -1,4 +1,5 @@
 ﻿using LittleWorld.Common;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
@@ -36,13 +37,18 @@ namespace LittleWorld.Controllers
 
         public void GenerateWorld(int x, int z)
         {
-            stopwatch.Start();
-
             _matrixSize = new Vector2Int(x, z);
-            _matrix = new Cell[_matrixSize.x, _matrixSize.y];            
-            for (int i = 0; i < x; i++)
+            _matrix = new Cell[_matrixSize.x, _matrixSize.y];
+            StartCoroutine("GenerateGrid");
+        }
+
+        private IEnumerator GenerateGrid()
+        {
+            yield return null;
+            stopwatch.Start();                        
+            for (int i = 0; i < _matrixSize.x; i++)
             {
-                for (int j = 0; j < z; j++)
+                for (int j = 0; j < _matrixSize.y; j++)
                 {
                     Vector2Int index = new Vector2Int(i, j);
 
@@ -55,7 +61,9 @@ namespace LittleWorld.Controllers
 
                     _matrix[index.x, index.y] = cell;
                 }
+                yield return null;
             }
+            yield return null;
 
             stopwatch.Stop();
             // Get the elapsed time as a TimeSpan value.

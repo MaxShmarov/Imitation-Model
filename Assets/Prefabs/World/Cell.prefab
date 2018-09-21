@@ -26,7 +26,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1231737887728462
 GameObject:
@@ -43,7 +43,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1277347911899350
 GameObject:
@@ -57,11 +57,11 @@ GameObject:
   - component: {fileID: 23351352532395616}
   - component: {fileID: 114346144298815452}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Cell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1301058577737574
 GameObject:
@@ -78,7 +78,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1374961710468068
 GameObject:
@@ -95,7 +95,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1395320843322722
 GameObject:
@@ -109,12 +109,13 @@ GameObject:
   - component: {fileID: 114957729634930872}
   - component: {fileID: 114727850265577742}
   - component: {fileID: 114697991462435370}
+  - component: {fileID: 114335245168022604}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1679185116278358
 GameObject:
@@ -131,7 +132,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &1850098953694088
 GameObject:
@@ -148,7 +149,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4244950608179976
 Transform:
@@ -171,12 +172,12 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1277347911899350}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 02093e44a96a8104caf641c589abe9bb, type: 2}
@@ -266,6 +267,21 @@ MonoBehaviour:
   m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114335245168022604
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395320843322722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6288d6c7e51ae0b45ac95b1f802c8a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sunIntensity: {fileID: 114378225604372218}
+  _sunIcon: {fileID: 114256694816524766}
+  _rainIntensity: {fileID: 114030422466907048}
+  _rainIcon: {fileID: 114887681726747130}
 --- !u!114 &114346144298815452
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -278,10 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _renderer: {fileID: 23351352532395616}
-  _sunIntensity: {fileID: 114378225604372218}
-  _sunIcon: {fileID: 114256694816524766}
-  _rainIntensity: {fileID: 114030422466907048}
-  _rainIcon: {fileID: 114887681726747130}
+  _cellUI: {fileID: 114335245168022604}
 --- !u!114 &114378225604372218
 MonoBehaviour:
   m_ObjectHideFlags: 1

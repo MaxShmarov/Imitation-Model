@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace AlphaBunker.BunkerInside
+namespace LittleWorld
 {
     public class Billboard : MonoBehaviour
     {
