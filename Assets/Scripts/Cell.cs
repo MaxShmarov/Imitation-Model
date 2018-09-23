@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using LittleWorld.Common;
 using LittleWorld.UI;
 using cakeslice;
+using LittleWorld.Controllers;
 
 namespace LittleWorld
 {
@@ -25,6 +26,7 @@ namespace LittleWorld
         private Vector3 _defaultCellSize = new Vector3(1f, 1f, 1f);
         private Environment _environment;
         private CurrentWeather _currentWeather;
+        private int _currentGrass = 0;
         private Transform _transform;
 
         public Vector2Int _positionInMatrix { get; private set; }
@@ -36,12 +38,12 @@ namespace LittleWorld
 
         private void OnEnable()
         {
-            EventManager.StartListening(Config.NextStep, UpdateWeatherVariable);
+            EventManager.StartListening(Config.NextStep, UpdateCellVariables);
         }
 
         private void OnDisable()
         {
-            EventManager.StopListening(Config.NextStep, UpdateWeatherVariable);
+            EventManager.StopListening(Config.NextStep, UpdateCellVariables);
         }
 
         public void Init(Vector3 position, string cellName, Vector2Int index)
@@ -53,7 +55,7 @@ namespace LittleWorld
             _environment = Database.Instance.GetRandomEnvironment();
             _positionInMatrix = index;
             EnvironmentFromData();
-            UpdateWeatherVariable();
+            InitUIVariables();
             _outline.enabled = false;
         }
 
@@ -64,10 +66,49 @@ namespace LittleWorld
             _renderer.material.color = _environment.Color;
         }
 
-        private void UpdateWeatherVariable()
+        private void UpdateCellVariables()
+        {
+            bool waterBeside = CheckNeighbours();
+            _currentWeather = Database.Instance.Weather.GetRandomWeather();
+            _currentGrass = Database.Instance.Grass.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, waterBeside);
+            _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
+        }
+
+        private bool CheckNeighbours()
+        {
+            int x = _positionInMatrix.x;
+            int y = _positionInMatrix.y;
+            if (CheckCell(x + 1, y))
+                return true;
+            if (CheckCell(x, y + 1))
+                return true;
+            if (CheckCell(x - 1, y))
+                return true;
+            if (CheckCell(x, y - 1))
+                return true;
+            if (CheckCell(x + 1, y + 1))
+                return true;
+            if (CheckCell(x + 1, y - 1))
+                return true;
+            if (CheckCell(x - 1, y + 1))
+                return true;
+            if (CheckCell(x - 1, y - 1))
+                return true;
+            return false;
+        }
+
+        private bool CheckCell(int x, int y)
+        {
+            var cell = GameController.Instance.GetCellByPosition(x, y);
+            if (cell != null && cell._environment.Type == EnvironmentType.Lake)
+                return true;
+            return false;
+        }
+
+        private void InitUIVariables()
         {
             _currentWeather = Database.Instance.Weather.GetRandomWeather();
-            _cellUI.UpdateValues(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity);
+            _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
         }
 
         public void Select(bool selected)

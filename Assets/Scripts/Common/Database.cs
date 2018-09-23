@@ -18,6 +18,16 @@ namespace LittleWorld.Common
             }
         }
 
+        private Grass _grass = new Grass();
+        public Grass Grass
+        {
+            get
+            {
+                return _grass;
+
+            }
+        }
+
         public Environment GetRandomEnvironment()
         {
             var randomIndex = Config.GetRandomValue(0, EnvironmentDatabase.Environments.Count);

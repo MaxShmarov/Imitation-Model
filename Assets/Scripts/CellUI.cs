@@ -15,11 +15,16 @@ namespace LittleWorld.UI
         private Text _rainIntensity;
         [SerializeField]
         private Image _rainIcon;
+        [SerializeField]
+        private Text _grassJuiciness;
+        [SerializeField]
+        private Image _grassIcon;
 
-        public void UpdateValues(int sunIntensity, int rainIntensity)
+        public void UpdateUI(int sunIntensity, int rainIntensity, int grassJuiciness)
         {
             _sunIntensity.text = sunIntensity.ToString();
             _rainIntensity.text = rainIntensity.ToString();
+            _grassJuiciness.text = grassJuiciness.ToString();
 
             switch (sunIntensity)
             {
@@ -50,6 +55,28 @@ namespace LittleWorld.UI
                     break;
                 default:
                     _rainIcon.fillAmount = 0f;
+                    break;
+            }
+
+            switch (grassJuiciness)
+            {
+                case 5:
+                    _grassIcon.fillAmount = 1f;
+                    break;
+                case 4:
+                    _grassIcon.fillAmount = 0.8f;
+                    break;
+                case 3:
+                    _grassIcon.fillAmount = 0.6f;
+                    break;
+                case 2:
+                    _grassIcon.fillAmount = 0.4f;
+                    break;
+                case 1:
+                    _grassIcon.fillAmount = 0.2f;
+                    break;
+                default:
+                    _grassIcon.fillAmount = 0f;
                     break;
             }
         }

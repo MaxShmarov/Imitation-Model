@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace LittleWorld.Controllers
 {
-    public class GameController : MonoBehaviour
+    public class GameController : Helpers.Singleton<GameController>
     {
         [SerializeField]
         private UIController _uiController;
@@ -99,6 +99,15 @@ namespace LittleWorld.Controllers
         public void NextStep()
         {
             EventManager.Trigger(Config.NextStep);
+        }
+
+        public Cell GetCellByPosition(int x, int y)
+        {
+            if (x < _matrixSize.x && x >= 0
+                && y < _matrixSize.y && y >= 0)
+                return _matrix[x, y];
+            else
+                return null;
         }
     }
 }
