@@ -19,6 +19,13 @@ namespace LittleWorld.UI
         private Text _grassJuiciness;
         [SerializeField]
         private Image _grassIcon;
+        [SerializeField]
+        private Canvas _canvas;
+
+        private void Start()
+        {
+            _canvas.worldCamera = Controllers.GameController.Instance._uiCamera;
+        }
 
         public void UpdateUI(int sunIntensity, int rainIntensity, int grassJuiciness)
         {
