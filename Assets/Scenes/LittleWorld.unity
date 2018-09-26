@@ -230,6 +230,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnvironmentDatabase: {fileID: 11400000, guid: fe30b15e6f4942c43a2ab6a7c76e4f70,
     type: 2}
+  _conditions:
+  - Name: Sunny
+    Icon: {fileID: 21300000, guid: 03acf62a04dab2e4fb9b502d3602e5db, type: 3}
+  - Name: Rainy
+    Icon: {fileID: 21300000, guid: c6391dcc26b069b45a4954edf54737c4, type: 3}
+  - Name: Grass
+    Icon: {fileID: 21300000, guid: 7ead14c9f38471c41aca9c0622fb7eeb, type: 3}
 --- !u!1 &81394977
 GameObject:
   m_ObjectHideFlags: 0
@@ -2711,7 +2718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1991978024
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2872,7 +2879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 40}
+  m_AnchoredPosition: {x: 0, y: 35}
   m_SizeDelta: {x: 700, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2117776256

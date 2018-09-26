@@ -44,12 +44,20 @@ namespace LittleWorld.Controllers
         {
             ClearScreen();
             var _environments = _database.GetEnvironmentsData();
+            var conditions = _database.GetConditions();
 
             foreach (var environment in _environments)
             {
                 var convention = Instantiate(_conventionPrefab, _conventions.content);
                 convention.Init(environment.Color, environment.Name);
-            }           
+            }
+
+            foreach (var condition in conditions)
+            {
+                var convention = Instantiate(_conventionPrefab, _conventions.content);
+                convention.Init(condition.Icon, condition.Name);
+            }
+
             ShowStartScreen(true);
         }
 

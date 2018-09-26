@@ -23,7 +23,7 @@ namespace LittleWorld
 
         private Vector3 _defaultCellSize = new Vector3(1f, 1f, 1f);
         private Environment _environment;
-        private CurrentWeather _currentWeather;
+   //     private CurrentWeather _currentWeather;
         private int _currentGrass = 0;
         private Transform _transform;
         private bool _waterBeside = false;
@@ -33,7 +33,7 @@ namespace LittleWorld
 
         private void Awake()
         {
-            _currentWeather = new CurrentWeather();
+   //         _currentWeather = new CurrentWeather();
         }
 
         private void OnEnable()
@@ -73,7 +73,7 @@ namespace LittleWorld
                 _knowNeighbours = true;
             }
             
-            _currentWeather = Database.Instance.Weather.GetRandomWeather();
+            var _currentWeather = Database.Instance.Weather.GetRandomWeather();
             _currentGrass = Database.Instance.Grass.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
         }
@@ -111,7 +111,7 @@ namespace LittleWorld
 
         private void InitUIVariables()
         {
-            _currentWeather = Database.Instance.Weather.GetRandomWeather();
+            var _currentWeather = Database.Instance.Weather.GetRandomWeather();
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
         }
     }

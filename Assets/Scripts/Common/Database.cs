@@ -9,6 +9,8 @@ namespace LittleWorld.Common
     {
         [SerializeField]
         private EnvironmentDatabase EnvironmentDatabase;
+        [SerializeField]
+        private List<WeatherAndGrassConditions> _conditions;
         private Weather _weather = new Weather();
         public Weather Weather
         {
@@ -26,6 +28,18 @@ namespace LittleWorld.Common
                 return _grass;
 
             }
+        }
+
+        [System.Serializable]
+        public class WeatherAndGrassConditions
+        {
+            public string Name;
+            public Sprite Icon;
+        }
+
+        public List<WeatherAndGrassConditions> GetConditions()
+        {
+            return _conditions;
         }
 
         public Environment GetRandomEnvironment()

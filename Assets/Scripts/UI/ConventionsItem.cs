@@ -17,5 +17,11 @@ namespace LittleWorld.UI
             _icon.color = color;
             _name.text = name;
         }
+
+        public void Init(Sprite sprite, string name)
+        {
+            _icon.sprite = sprite;
+            _name.text = name;
+        }
     }
 }
