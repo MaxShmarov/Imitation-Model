@@ -28,10 +28,17 @@ namespace LittleWorld.Controllers
         private Button _nextStepButton;
         [SerializeField]
         private Button _backStepButton;
+        [SerializeField]
+        private Button _hideCanvasButton;
+        [SerializeField]
+        private Text _hideButtonText;
 
         private int _sizeX;
         private int _sizeZ;
         private Database _database;
+
+        [HideInInspector]
+        public bool _canvasShow = true;
 
         private void Start()
         {
@@ -110,6 +117,7 @@ namespace LittleWorld.Controllers
             _inputPanel.gameObject.SetActive(enabled);
             _nextStepButton.gameObject.SetActive(!enabled);
             _backStepButton.gameObject.SetActive(!enabled);
+            _hideCanvasButton.gameObject.SetActive(!enabled);
         }
 
         public void NextStepClickHandler()
@@ -117,6 +125,20 @@ namespace LittleWorld.Controllers
             if (_gameController == null)
                 return;
             _gameController.NextStep();
+        }
+
+        public void HideCanvasClickhandler()
+        {
+            _canvasShow = !_canvasShow;
+            if (_canvasShow)
+            {
+                _hideButtonText.text = "Hide all canvases";
+            }
+            else
+            {
+                _hideButtonText.text = "Show all canvases";
+            }
+            EventManager<bool>.Trigger("CanvasShow", _canvasShow);
         }
     }
 }

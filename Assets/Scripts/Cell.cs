@@ -14,7 +14,7 @@ namespace LittleWorld
         public int SunnyIntensity;
     }
 
-    public class Cell : MonoBehaviour
+    public class Cell : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField]
         private Renderer _renderer;
@@ -23,27 +23,24 @@ namespace LittleWorld
 
         private Vector3 _defaultCellSize = new Vector3(1f, 1f, 1f);
         private Environment _environment;
-   //     private CurrentWeather _currentWeather;
         private int _currentGrass = 0;
         private Transform _transform;
         private bool _waterBeside = false;
         private bool _knowNeighbours = false;
+        private bool _showCanvas = true;
 
         public Vector2Int _positionInMatrix { get; private set; }
-
-        private void Awake()
-        {
-   //         _currentWeather = new CurrentWeather();
-        }
 
         private void OnEnable()
         {
             EventManager.StartListening(Config.NextStep, UpdateCellVariables);
+            EventManager<bool>.StartListening("CanvasShow", ShowCanvas);
         }
 
         private void OnDisable()
         {
             EventManager.StopListening(Config.NextStep, UpdateCellVariables);
+            EventManager<bool>.StopListening("CanvasShow", ShowCanvas);
         }
 
         public void Init(Vector3 position, string cellName, Vector2Int index)
@@ -113,6 +110,18 @@ namespace LittleWorld
         {
             var _currentWeather = Database.Instance.Weather.GetRandomWeather();
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
+        }
+
+        private void ShowCanvas(bool enabled)
+        {
+            _showCanvas = enabled;
+            _cellUI.gameObject.SetActive(_showCanvas);
+        }
+
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            ShowCanvas(!_showCanvas);
         }
     }
 }
