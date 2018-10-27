@@ -11,8 +11,6 @@ namespace LittleWorld.Controllers
     public class UIController : MonoBehaviour
     {
         [SerializeField]
-        private GameController _gameController;
-        [SerializeField]
         private RectTransform _background;
         [SerializeField]
         private RectTransform _inputPanel;
@@ -32,26 +30,42 @@ namespace LittleWorld.Controllers
         private Button _hideCanvasButton;
         [SerializeField]
         private Text _hideButtonText;
+        [SerializeField]
+        private Image _currentCoord;
+        [SerializeField]
+        private Text _cellCord;
+        [SerializeField]
+        private GameObject _gameUI;
 
-        private int _sizeX;
-        private int _sizeZ;
-        private Database _database;
+        private GameController _gameController;
 
         [HideInInspector]
         public bool _canvasShow = true;
 
         private void Start()
         {
-            _database = Database.Instance;
             _inputX.contentType = InputField.ContentType.IntegerNumber;
             _inputZ.contentType = InputField.ContentType.IntegerNumber;
         }
 
+        public void ClearCoord()
+        {
+            _cellCord.text = string.Empty;
+        }
+
+        public void SetCoordValue(int x, int z)
+        {
+            _cellCord.text = string.Format("X= {0} ; Y = {1}", x, z);
+        }
+
         public void InitUI()
         {
+            _gameController = GameController.Instance;
+            var worldData = GameController.Instance.GetWorldData();
             ClearScreen();
-            var _environments = _database.GetEnvironmentsData();
-            var conditions = _database.GetConditions();
+            var _environments = worldData.GetEnvironments();
+            var _weathers = worldData.GetWeathers();
+            var _grass = worldData.GetGrass();
 
             foreach (var environment in _environments)
             {
@@ -59,10 +73,16 @@ namespace LittleWorld.Controllers
                 convention.Init(environment.Color, environment.Name);
             }
 
-            foreach (var condition in conditions)
+            foreach (var condition in _weathers)
             {
                 var convention = Instantiate(_conventionPrefab, _conventions.content);
                 convention.Init(condition.Icon, condition.Name);
+            }
+
+            if (_grass != null)
+            {
+                var convention = Instantiate(_conventionPrefab, _conventions.content);
+                convention.Init(_grass.Icon, _grass.Name);
             }
 
             ShowStartScreen(true);
@@ -73,22 +93,22 @@ namespace LittleWorld.Controllers
             if (_inputX.text == string.Empty && _inputZ.text == string.Empty)
                 return;
 
-            _sizeX = int.Parse(_inputX.text);
-            _sizeZ = int.Parse(_inputZ.text);
+            Config.SizeX = int.Parse(_inputX.text);
+            Config.SizeY = int.Parse(_inputZ.text);
 
-            if (_sizeX < Config.MinCellCount || _sizeX > Config.MaxCellCount)
+            if (Config.SizeX < Config.MinCellCount || Config.SizeX > Config.MaxCellCount)
             {
                 _inputX.text = string.Empty;
                 return;
             }
                 
-            if (_sizeZ < Config.MinCellCount || _sizeZ > Config.MaxCellCount)
+            if (Config.SizeY < Config.MinCellCount || Config.SizeY > Config.MaxCellCount)
             {
                 _inputZ.text = string.Empty;
                 return;
             }
 
-            _gameController.GenerateWorld(_sizeX, _sizeZ);
+            GameController.Instance.GenerateWorld(Config.SizeX, Config.SizeY);
             ShowStartScreen(false);
             ClearScreen();
         }
@@ -115,9 +135,7 @@ namespace LittleWorld.Controllers
         {
             _background.gameObject.SetActive(enabled);
             _inputPanel.gameObject.SetActive(enabled);
-            _nextStepButton.gameObject.SetActive(!enabled);
-            _backStepButton.gameObject.SetActive(!enabled);
-            _hideCanvasButton.gameObject.SetActive(!enabled);
+            _gameUI.SetActive(!enabled);
         }
 
         public void NextStepClickHandler()

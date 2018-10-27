@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
-using System.Threading;
+using Helpers;
+using LittleWorld.Data;
 
 namespace LittleWorld.Controllers
 {
-    public class GameController : Helpers.Singleton<GameController>
+    public class GameController : Singleton<GameController>
     {
+        [SerializeField]
+        private WorldData _worldData;
         [SerializeField]
         private UIController _uiController;
         [SerializeField]
@@ -18,8 +21,6 @@ namespace LittleWorld.Controllers
 
         public Camera _uiCamera;
 
-        private Stopwatch stopwatch = new Stopwatch();
-
         private const float _cellOffset = 1.1f;
         private Cell[,] _matrix;
         private Vector2Int _matrixSize;
@@ -28,6 +29,21 @@ namespace LittleWorld.Controllers
         private void Start()
         {
             _uiController.InitUI();           
+        }
+
+        public WorldData GetWorldData()
+        {
+            return _worldData;
+        }
+
+        public void UpdateCoordsCell(int x, int z)
+        {
+            _uiController.SetCoordValue(x, z);
+        }
+
+        public void ClearCoords()
+        {
+            _uiController.ClearCoord();
         }
 
         public void GenerateWorld(int x, int z)
@@ -40,8 +56,7 @@ namespace LittleWorld.Controllers
         }
 
         private IEnumerator GenerateGrid()
-        {
-            stopwatch.Start();                        
+        {                      
             for (int i = 0; i < _matrixSize.x; i++)
             {
                 for (int j = 0; j < _matrixSize.y; j++)
@@ -52,21 +67,13 @@ namespace LittleWorld.Controllers
 
                     Vector3 cellPos = new Vector3(i * _cellOffset, 0, j * _cellOffset);
                     string cellName = string.Format("Cell [{0}][{1}]", i, j);
-                    cell.Init(cellPos, cellName, index);
+                    Environment environment = _worldData.GetRandomEnvironment();
+                    cell.Init(cellPos, cellName, environment, index);
 
                     _matrix[index.x, index.y] = cell;
                 }
             }
             yield return null;
-
-            stopwatch.Stop();
-            // Get the elapsed time as a TimeSpan value.
-            var ts = stopwatch.Elapsed;
-            // Format and display the TimeSpan value.
-            string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds,
-                ts.Milliseconds / 10);
-            UnityEngine.Debug.LogError(elapsedTime);
         }
 
         public void ResetWorld()

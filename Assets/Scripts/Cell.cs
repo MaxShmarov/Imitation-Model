@@ -14,7 +14,7 @@ namespace LittleWorld
         public int SunnyIntensity;
     }
 
-    public class Cell : MonoBehaviour, IPointerClickHandler
+    public class Cell : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField]
         private Renderer _renderer;
@@ -43,19 +43,19 @@ namespace LittleWorld
             EventManager<bool>.StopListening("CanvasShow", ShowCanvas);
         }
 
-        public void Init(Vector3 position, string cellName, Vector2Int index)
+        public void Init(Vector3 position, string cellName, Environment environment, Vector2Int index)
         {
             _transform = transform;
             _transform.localScale = _defaultCellSize;
             _transform.position = position;
             name = cellName;
-            _environment = Database.Instance.GetRandomEnvironment();
+            _environment = environment;
             _positionInMatrix = index;
-            EnvironmentFromData();           
+            SetEnvironmentData();           
             InitUIVariables();
         }
 
-        private void EnvironmentFromData()
+        private void SetEnvironmentData()
         {
             if (_environment == null || _renderer == null)
                 return;
@@ -70,8 +70,8 @@ namespace LittleWorld
                 _knowNeighbours = true;
             }
             
-            var _currentWeather = Database.Instance.Weather.GetRandomWeather();
-            _currentGrass = Database.Instance.Grass.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
+            var _currentWeather = Config.GetRandomWeather();
+            _currentGrass = Config.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
         }
 
@@ -108,7 +108,7 @@ namespace LittleWorld
 
         private void InitUIVariables()
         {
-            var _currentWeather = Database.Instance.Weather.GetRandomWeather();
+            var _currentWeather = Config.GetRandomWeather();
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
         }
 
@@ -122,6 +122,16 @@ namespace LittleWorld
         public void OnPointerClick(PointerEventData eventData)
         {
             ShowCanvas(!_showCanvas);
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            GameController.Instance.UpdateCoordsCell(_positionInMatrix.x, _positionInMatrix.y);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            GameController.Instance.ClearCoords();
         }
     }
 }

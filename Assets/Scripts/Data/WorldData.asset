@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1ad35f708b5dbf4285da84573a2a957, type: 3}
+  m_Name: WorldData
+  m_EditorClassIdentifier: 
+  _environmentsData:
+  - Name: Field
+    Type: 0
+    Color: {r: 0.20403913, g: 0.735849, b: 0.14231041, a: 1}
+    GrassMayGrow: 1
+  - Name: Mountain
+    Type: 1
+    Color: {r: 0.509434, g: 0.19464225, b: 0.19464225, a: 1}
+    GrassMayGrow: 0
+  - Name: Lake
+    Type: 2
+    Color: {r: 0.22258809, g: 0.75345385, b: 0.7735849, a: 1}
+    GrassMayGrow: 0
+  _weatherData:
+  - Name: Rainy
+    Icon: {fileID: 21300000, guid: c6391dcc26b069b45a4954edf54737c4, type: 3}
+  - Name: Sunny
+    Icon: {fileID: 21300000, guid: 03acf62a04dab2e4fb9b502d3602e5db, type: 3}
+  _grassData:
+    Name: Grass
+    Icon: {fileID: 21300000, guid: 7ead14c9f38471c41aca9c0622fb7eeb, type: 3}
