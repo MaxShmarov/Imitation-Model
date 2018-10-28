@@ -14,6 +14,8 @@ namespace LittleWorld.Data
         private List<Weather> _weatherData;
         [SerializeField]
         private Grass _grassData;
+        [SerializeField]
+        private Rabbit _rabbitData;
 
         public Environment GetRandomEnvironment()
         {
@@ -38,6 +40,11 @@ namespace LittleWorld.Data
         public Grass GetGrass()
         {
             return _grassData;
+        }
+
+        public Rabbit GetRabbits()
+        {
+            return _rabbitData;
         }
     }
 }

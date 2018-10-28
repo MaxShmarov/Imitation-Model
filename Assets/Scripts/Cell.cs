@@ -24,6 +24,7 @@ namespace LittleWorld
         private Vector3 _defaultCellSize = new Vector3(1f, 1f, 1f);
         private Environment _environment;
         private int _currentGrass = 0;
+        private int _rabbitCount = 0;
         private Transform _transform;
         private bool _waterBeside = false;
         private bool _knowNeighbours = false;
@@ -72,7 +73,8 @@ namespace LittleWorld
             
             var _currentWeather = Config.GetRandomWeather();
             _currentGrass = Config.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
-            _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
+            _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _rabbitCount);
+            _rabbitCount = Config.UpdateRabbits(_currentGrass, _rabbitCount);
         }
 
         private bool CheckNeighbours()
@@ -109,7 +111,7 @@ namespace LittleWorld
         private void InitUIVariables()
         {
             var _currentWeather = Config.GetRandomWeather();
-            _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass);
+            _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _rabbitCount);
         }
 
         private void ShowCanvas(bool enabled)
