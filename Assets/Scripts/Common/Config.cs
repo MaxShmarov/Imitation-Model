@@ -135,11 +135,20 @@ namespace LittleWorld.Common
 
         public static int UpdateRabbits(int currentGrass, int rabbitCount)
         {
-           if(currentGrass < rabbitCount)
+            //Code: -1 - too many rabbits(leave or die)
+            if (currentGrass < rabbitCount)
             {
-
+                return -1;
             }
-            return 0;
+            else if (rabbitCount == 2)
+            {
+                return AddRabbit(rabbitCount);
+            }
+            if (rabbitCount > 3)
+            {
+                return -1;
+            }
+            return rabbitCount;
         }
 
 

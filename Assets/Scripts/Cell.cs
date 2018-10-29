@@ -67,45 +67,66 @@ namespace LittleWorld
         {
             if (!_knowNeighbours)
             {
-                _waterBeside = CheckNeighbours();
+                CheckNeighbours();
+                AddRabbits();
                 _knowNeighbours = true;
             }
             
             var _currentWeather = Config.GetRandomWeather();
+            var tempRabbits = Config.UpdateRabbits(_currentGrass, _rabbitCount);
+            if (_rabbitCount == -1)
+            {
+
+            }
+            else
+            {
+                _rabbitCount = tempRabbits;
+            }
             _currentGrass = Config.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _rabbitCount);
-            _rabbitCount = Config.UpdateRabbits(_currentGrass, _rabbitCount);
         }
 
-        private bool CheckNeighbours()
+        private void CheckNeighbours()
         {
+            _waterBeside = false;
             int x = _positionInMatrix.x;
             int y = _positionInMatrix.y;
-            if (CheckCell(x + 1, y))
-                return true;
-            if (CheckCell(x, y + 1))
-                return true;
-            if (CheckCell(x - 1, y))
-                return true;
-            if (CheckCell(x, y - 1))
-                return true;
-            if (CheckCell(x + 1, y + 1))
-                return true;
-            if (CheckCell(x + 1, y - 1))
-                return true;
-            if (CheckCell(x - 1, y + 1))
-                return true;
-            if (CheckCell(x - 1, y - 1))
-                return true;
-            return false;
+            CheckCell(x + 1, y);
+            CheckCell(x, y + 1);
+            CheckCell(x - 1, y);
+            CheckCell(x, y - 1);
+            CheckCell(x + 1, y + 1);
+            CheckCell(x + 1, y - 1);
+            CheckCell(x - 1, y + 1);
+            CheckCell(x - 1, y - 1);
         }
 
-        private bool CheckCell(int x, int y)
+        private void CheckCell(int x, int y)
         {
             var cell = GameController.Instance.GetCellByPosition(x, y);
-            if (cell != null && cell._environment.Type == EnvironmentType.Lake)
-                return true;
-            return false;
+            if (cell != null)
+            {
+                switch(cell._environment.Type)
+                {
+                    case EnvironmentType.Lake:
+                        _waterBeside = true;
+                        break;
+                    case EnvironmentType.Mountain:
+                        break;
+                    case EnvironmentType.Field:
+                        if (cell._rabbitCount < 3 && cell._currentGrass > _rabbitCount)
+                        {
+                            _rabbitCount++;
+                        }
+                        break;
+                }
+      
+            }
+        }
+
+        private void AddRabbits()
+        {
+
         }
 
         private void InitUIVariables()
