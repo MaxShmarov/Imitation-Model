@@ -28,7 +28,7 @@ namespace LittleWorld.Controllers
 
         private void Start()
         {
-            _uiController.InitUI();           
+            _uiController.InitUI();
         }
 
         public WorldData GetWorldData()

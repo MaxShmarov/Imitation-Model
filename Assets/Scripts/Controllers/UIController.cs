@@ -45,7 +45,12 @@ namespace LittleWorld.Controllers
         private void Start()
         {
             _inputX.contentType = InputField.ContentType.IntegerNumber;
-            _inputZ.contentType = InputField.ContentType.IntegerNumber;
+            _inputZ.contentType = InputField.ContentType.IntegerNumber;            
+        }
+
+        public void ActiveRabbit()
+        {
+            EventManager.Trigger("AddRabbits");
         }
 
         public void ClearCoord()

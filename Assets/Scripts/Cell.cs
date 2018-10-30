@@ -37,12 +37,20 @@ namespace LittleWorld
         {
             EventManager.StartListening(Config.NextStep, UpdateCellVariables);
             EventManager<bool>.StartListening("CanvasShow", ShowCanvas);
+            EventManager.StartListening("AddRabbits", AddRabbitsClickHandler);
         }
 
         private void OnDisable()
         {
             EventManager.StopListening(Config.NextStep, UpdateCellVariables);
             EventManager<bool>.StopListening("CanvasShow", ShowCanvas);
+            EventManager.StopListening("AddRabbits", AddRabbitsClickHandler);
+        }
+
+        private void AddRabbitsClickHandler()
+        {
+            _rabbitCount = AddRabbits();
+            _cellUI.UpdateUI(-1, -1, _currentGrass, _rabbitCount);
         }
 
         public void Init(Vector3 position, string cellName, Environment environment, Vector2Int index)
@@ -69,11 +77,10 @@ namespace LittleWorld
             UpdateRabbits();
             if (!_knowNeighbours)
             {
-                CheckNeighbours();
-                _rabbitCount = AddRabbits();
+                CheckNeighbours();              
                 _knowNeighbours = true;
             }
-            
+
             var _currentWeather = Config.GetRandomWeather();
             _currentGrass -= _rabbitCount;
             if (_currentGrass < 0)
@@ -150,7 +157,7 @@ namespace LittleWorld
             int rand = 0;
             if (_environment.Type == EnvironmentType.Field)
             {
-                rand = UnityEngine.Random.Range(0, 4);
+                rand = UnityEngine.Random.Range(1, 4);
                 _rabbitCount = rand;
             }
             return rand;
