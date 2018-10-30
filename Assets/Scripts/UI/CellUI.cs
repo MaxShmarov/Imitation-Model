@@ -33,41 +33,44 @@ namespace LittleWorld.UI
 
         public void UpdateUI(int sunIntensity, int rainIntensity, int grassJuiciness, int rabbitCount)
         {
-            _sunIntensity.text = sunIntensity.ToString();
-            _rainIntensity.text = rainIntensity.ToString();
             _grassJuiciness.text = grassJuiciness.ToString();
             _rabbitCount.text = rabbitCount.ToString();
 
-            switch (sunIntensity)
+            if (sunIntensity != -1 || rainIntensity != -1)
             {
-                case 3:
-                    _sunIcon.fillAmount = 1f;
-                    break;
-                case 2:
-                    _sunIcon.fillAmount = 0.66f;
-                    break;
-                case 1:
-                    _sunIcon.fillAmount = 0.33f;
-                    break;
-                default:
-                    _sunIcon.fillAmount = 0f;
-                    break;
-            }
+                _sunIntensity.text = sunIntensity.ToString();
+                _rainIntensity.text = rainIntensity.ToString();
+                switch (sunIntensity)
+                {
+                    case 3:
+                        _sunIcon.fillAmount = 1f;
+                        break;
+                    case 2:
+                        _sunIcon.fillAmount = 0.66f;
+                        break;
+                    case 1:
+                        _sunIcon.fillAmount = 0.33f;
+                        break;
+                    default:
+                        _sunIcon.fillAmount = 0f;
+                        break;
+                }
 
-            switch (rainIntensity)
-            {
-                case 3:
-                    _rainIcon.fillAmount = 1f;
-                    break;
-                case 2:
-                    _rainIcon.fillAmount = 0.66f;
-                    break;
-                case 1:
-                    _rainIcon.fillAmount = 0.33f;
-                    break;
-                default:
-                    _rainIcon.fillAmount = 0f;
-                    break;
+                switch (rainIntensity)
+                {
+                    case 3:
+                        _rainIcon.fillAmount = 1f;
+                        break;
+                    case 2:
+                        _rainIcon.fillAmount = 0.66f;
+                        break;
+                    case 1:
+                        _rainIcon.fillAmount = 0.33f;
+                        break;
+                    default:
+                        _rainIcon.fillAmount = 0f;
+                        break;
+                }
             }
 
             switch (grassJuiciness)

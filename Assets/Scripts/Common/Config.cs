@@ -119,6 +119,12 @@ namespace LittleWorld.Common
             {
                 return MaxGrassJuiciness;
             }
+
+            if (currentGrass < MinGrassJuiciness)
+            {
+                return MinGrassJuiciness;
+            }
+
             currentGrass++;
             return currentGrass;
         }
@@ -129,6 +135,12 @@ namespace LittleWorld.Common
             {
                 return MinGrassJuiciness;
             }
+
+            if (currentGrass > MaxGrassJuiciness)
+            {
+                return MaxGrassJuiciness;
+            }
+
             currentGrass--;
             return currentGrass;
         }
@@ -140,33 +152,38 @@ namespace LittleWorld.Common
             {
                 return -1;
             }
-            else if (rabbitCount == 2)
+            else if (rabbitCount >= 2)
             {
                 return AddRabbit(rabbitCount);
-            }
-            if (rabbitCount > 3)
-            {
-                return -1;
             }
             return rabbitCount;
         }
 
 
-        private static int AddRabbit(int rabbitCount)
+        public static int AddRabbit(int rabbitCount)
         {
             if (rabbitCount >= MaxRabbitCount)
             {
-                return MaxGrassJuiciness;
+                return MaxRabbitCount;
+            }
+            if (rabbitCount <= MinRabbitCount)
+            {
+                return 1;
             }
             rabbitCount++;
             return rabbitCount;
         }
 
-        private static int RemoveRabbit(int rabbitCount)
+        public static int RemoveRabbit(int rabbitCount)
         {
-            if (rabbitCount <= MinCellCount)
+            if (rabbitCount <= MinRabbitCount)
             {
-                return MinGrassJuiciness;
+                return MinRabbitCount;
+            }
+
+            if (rabbitCount >= MaxRabbitCount)
+            {
+                return MaxRabbitCount;
             }
             rabbitCount--;
             return rabbitCount;

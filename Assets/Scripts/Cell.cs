@@ -29,6 +29,7 @@ namespace LittleWorld
         private bool _waterBeside = false;
         private bool _knowNeighbours = false;
         private bool _showCanvas = true;
+        private bool _cellFound = false;
 
         public Vector2Int _positionInMatrix { get; private set; }
 
@@ -65,22 +66,30 @@ namespace LittleWorld
 
         private void UpdateCellVariables()
         {
+            if(_rabbitCount != 0)
+            {
+                var tempRabbits = Config.UpdateRabbits(_currentGrass, _rabbitCount);
+                if (tempRabbits == -1 || tempRabbits >= 3)
+                {
+                    CheckNeighbours();
+                }
+                else
+                {
+                    _rabbitCount = tempRabbits;
+                }
+            }
             if (!_knowNeighbours)
             {
                 CheckNeighbours();
-                AddRabbits();
+                _rabbitCount = AddRabbits();
                 _knowNeighbours = true;
             }
             
             var _currentWeather = Config.GetRandomWeather();
-            var tempRabbits = Config.UpdateRabbits(_currentGrass, _rabbitCount);
-            if (_rabbitCount == -1)
+            _currentGrass -= _rabbitCount;
+            if (_currentGrass < 0)
             {
-
-            }
-            else
-            {
-                _rabbitCount = tempRabbits;
+                _currentGrass = 0;
             }
             _currentGrass = Config.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _rabbitCount);
@@ -89,6 +98,7 @@ namespace LittleWorld
         private void CheckNeighbours()
         {
             _waterBeside = false;
+            _cellFound = false;
             int x = _positionInMatrix.x;
             int y = _positionInMatrix.y;
             CheckCell(x + 1, y);
@@ -98,10 +108,10 @@ namespace LittleWorld
             CheckCell(x + 1, y + 1);
             CheckCell(x + 1, y - 1);
             CheckCell(x - 1, y + 1);
-            CheckCell(x - 1, y - 1);
+            CheckCell(x - 1, y - 1, true);
         }
 
-        private void CheckCell(int x, int y)
+        private void CheckCell(int x, int y, bool lastTry = false)
         {
             var cell = GameController.Instance.GetCellByPosition(x, y);
             if (cell != null)
@@ -114,19 +124,33 @@ namespace LittleWorld
                     case EnvironmentType.Mountain:
                         break;
                     case EnvironmentType.Field:
-                        if (cell._rabbitCount < 3 && cell._currentGrass > _rabbitCount)
+                        var rabbits = cell._rabbitCount;
+                        if (rabbits < 3 && cell._currentGrass > rabbits && _rabbitCount > 0)
                         {
-                            _rabbitCount++;
+                            _rabbitCount = Config.RemoveRabbit(_rabbitCount);
+                            rabbits = Config.AddRabbit(rabbits);
+                            cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, rabbits);
+                            _cellFound = true;
                         }
                         break;
                 }
       
             }
+            if (lastTry && !_cellFound && _currentGrass < _rabbitCount)
+            {
+                _rabbitCount = Config.RemoveRabbit(_rabbitCount);
+            }
         }
 
-        private void AddRabbits()
+        private int AddRabbits()
         {
-
+            int rand = 0;
+            if (_environment.Type == EnvironmentType.Field)
+            {
+                rand = UnityEngine.Random.Range(0, 4);
+                _rabbitCount = rand;
+            }
+            return rand;
         }
 
         private void InitUIVariables()
