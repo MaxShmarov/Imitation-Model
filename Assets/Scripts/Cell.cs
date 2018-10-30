@@ -66,18 +66,7 @@ namespace LittleWorld
 
         private void UpdateCellVariables()
         {
-            if(_rabbitCount != 0)
-            {
-                var tempRabbits = Config.UpdateRabbits(_currentGrass, _rabbitCount);
-                if (tempRabbits == -1 || tempRabbits >= 3)
-                {
-                    CheckNeighbours();
-                }
-                else
-                {
-                    _rabbitCount = tempRabbits;
-                }
-            }
+            UpdateRabbits();
             if (!_knowNeighbours)
             {
                 CheckNeighbours();
@@ -93,6 +82,21 @@ namespace LittleWorld
             }
             _currentGrass = Config.UpdateGrass(_environment.Type, _currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _waterBeside);
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _rabbitCount);
+        }
+
+        private void UpdateRabbits()
+        {
+            if (_rabbitCount != 0)
+            {
+                if (_rabbitCount == 2)
+                {
+                    _rabbitCount = Config.AddRabbit(_rabbitCount);
+                }
+                while (_currentGrass < _rabbitCount)
+                {
+                    CheckNeighbours();
+                }
+            }
         }
 
         private void CheckNeighbours()
@@ -124,19 +128,18 @@ namespace LittleWorld
                     case EnvironmentType.Mountain:
                         break;
                     case EnvironmentType.Field:
-                        var rabbits = cell._rabbitCount;
-                        if (rabbits < 3 && cell._currentGrass > rabbits && _rabbitCount > 0)
+                        if (cell._rabbitCount < 3 && cell._currentGrass > cell._rabbitCount && _rabbitCount > 0)
                         {
                             _rabbitCount = Config.RemoveRabbit(_rabbitCount);
-                            rabbits = Config.AddRabbit(rabbits);
-                            cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, rabbits);
+                            cell._rabbitCount = Config.AddRabbit(cell._rabbitCount);
+                            cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, cell._rabbitCount);
                             _cellFound = true;
                         }
                         break;
                 }
       
             }
-            if (lastTry && !_cellFound && _currentGrass < _rabbitCount)
+            if (lastTry && !_cellFound)
             {
                 _rabbitCount = Config.RemoveRabbit(_rabbitCount);
             }

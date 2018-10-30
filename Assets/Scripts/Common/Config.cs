@@ -181,7 +181,7 @@ namespace LittleWorld.Common
                 return MinRabbitCount;
             }
 
-            if (rabbitCount >= MaxRabbitCount)
+            if (rabbitCount > MaxRabbitCount)
             {
                 return MaxRabbitCount;
             }
