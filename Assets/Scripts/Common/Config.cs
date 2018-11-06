@@ -18,8 +18,8 @@ namespace LittleWorld.Common
         public const int MinGrassJuiciness = 0;
         public const int MaxGrassJuiciness = 5;
 
-        public const int MinRabbitCount = 0;
-        public const int MaxRabbitCount = 3;
+        public const int MinThingCount = 0;
+        public const int MaxThingCount = 3;
 
         public static int GetRandomValue(int min, int max)
         {
@@ -154,39 +154,39 @@ namespace LittleWorld.Common
             }
             else if (rabbitCount >= 2)
             {
-                return AddRabbit(rabbitCount);
+                return AddThing(rabbitCount);
             }
             return rabbitCount;
         }
 
 
-        public static int AddRabbit(int rabbitCount)
+        public static int AddThing(int count)
         {
-            if (rabbitCount >= MaxRabbitCount)
+            if (count >= MaxThingCount)
             {
-                return MaxRabbitCount;
+                return MaxThingCount;
             }
-            if (rabbitCount <= MinRabbitCount)
+            if (count <= MinThingCount)
             {
                 return 1;
             }
-            rabbitCount++;
-            return rabbitCount;
+            count++;
+            return count;
         }
 
-        public static int RemoveRabbit(int rabbitCount)
+        public static int RemoveThing(int count)
         {
-            if (rabbitCount <= MinRabbitCount)
+            if (count <= MinThingCount)
             {
-                return MinRabbitCount;
+                return MinThingCount;
             }
 
-            if (rabbitCount > MaxRabbitCount)
+            if (count > MaxThingCount)
             {
-                return MaxRabbitCount;
+                return MaxThingCount;
             }
-            rabbitCount--;
-            return rabbitCount;
+            count--;
+            return count;
         }
     }
 }

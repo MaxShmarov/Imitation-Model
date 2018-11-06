@@ -53,6 +53,16 @@ namespace LittleWorld.Controllers
             EventManager.Trigger("AddRabbits");
         }
 
+        public void ActiveWolfs()
+        {
+            EventManager.Trigger("AddWolfs");
+        }
+
+        public void ActiveHunters()
+        {
+            EventManager.Trigger("AddHunters");
+        }
+
         public void ClearCoord()
         {
             _cellCord.text = string.Empty;
@@ -60,7 +70,7 @@ namespace LittleWorld.Controllers
 
         public void SetCoordValue(int x, int z)
         {
-            _cellCord.text = string.Format("X= {0} ; Y = {1}", x, z);
+            _cellCord.text = string.Format("X:{0} Y:{1}", x, z);
         }
 
         public void InitUI()
