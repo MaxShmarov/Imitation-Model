@@ -36,14 +36,14 @@ namespace LittleWorld.Controllers
             return _worldData;
         }
 
-        public void UpdateCoordsCell(int x, int z)
+        public void UpdateCoordsCell(int x, int z, int sun, int rain, int grass, int rabbits, int wolves, int hunters)
         {
-            _uiController.SetCoordValue(x, z);
+            _uiController.SetStatsPanel(x, z, sun, rain, grass, rabbits, wolves, hunters);
         }
 
-        public void ClearCoords()
+        public void ClearStats()
         {
-            _uiController.ClearCoord();
+            _uiController.ClearStats();
         }
 
         public void GenerateWorld(int x, int z)

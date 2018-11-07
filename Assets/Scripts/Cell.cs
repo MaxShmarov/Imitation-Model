@@ -34,6 +34,7 @@ namespace LittleWorld
         private int _rabbitCount = 0;
         private int _wolfCount = 0;
         private int _hunterCount = 0;
+        private CurrentWeather _currentWeather;
         //private List<Wolf> wolves = new List<Wolf>();
         //private List<Hunter> hunters = new List<Hunter>();
         private Transform _transform;
@@ -108,7 +109,7 @@ namespace LittleWorld
                 _knowNeighbours = true;
             }
 
-            var _currentWeather = Config.GetRandomWeather();
+            _currentWeather = Config.GetRandomWeather();
             _currentGrass -= _rabbitCount;
             if (_currentGrass < 0)
             {
@@ -346,7 +347,7 @@ namespace LittleWorld
 
         private void InitUIVariables()
         {
-            var _currentWeather = Config.GetRandomWeather();
+            _currentWeather = Config.GetRandomWeather();
             _cellUI.UpdateUI(_currentWeather.SunnyIntensity, _currentWeather.RainyIntensity, _currentGrass, _rabbitCount, _wolfCount, _hunterCount);
         }
 
@@ -364,12 +365,17 @@ namespace LittleWorld
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            GameController.Instance.UpdateCoordsCell(_positionInMatrix.x, _positionInMatrix.y);
+            GameController.Instance.UpdateCoordsCell(_positionInMatrix.x, 
+                                                     _positionInMatrix.y, 
+                                                     _currentWeather.SunnyIntensity,
+                                                    _currentWeather.RainyIntensity,
+                                                    _currentGrass, _rabbitCount,
+                                                    _wolfCount, _hunterCount);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            GameController.Instance.ClearCoords();
+            GameController.Instance.ClearStats();
         }
     }
 }

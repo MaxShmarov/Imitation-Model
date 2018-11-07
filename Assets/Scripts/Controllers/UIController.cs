@@ -31,11 +31,20 @@ namespace LittleWorld.Controllers
         [SerializeField]
         private Text _hideButtonText;
         [SerializeField]
-        private Image _currentCoord;
+        private GameObject _gameUI;
         [SerializeField]
         private Text _cellCord;
         [SerializeField]
-        private GameObject _gameUI;
+        private Text _cellWeather;
+        [SerializeField]
+        private Text _cellGrass;
+        [SerializeField]
+        private Text _cellRabbits;
+        [SerializeField]
+        private Text _cellWolves;
+        [SerializeField]
+        private Text _cellHunters;
+
 
         private GameController _gameController;
 
@@ -63,14 +72,29 @@ namespace LittleWorld.Controllers
             EventManager.Trigger("AddHunters");
         }
 
-        public void ClearCoord()
+        public void ClearStats()
         {
             _cellCord.text = string.Empty;
+            _cellWeather.text = string.Empty;
+            _cellGrass.text = string.Empty;
+            _cellRabbits.text = string.Empty;
+            _cellWolves.text = string.Empty;
+            _cellHunters.text = string.Empty;
         }
 
         public void SetCoordValue(int x, int z)
         {
             _cellCord.text = string.Format("X:{0} Y:{1}", x, z);
+        }
+
+        public void SetStatsPanel(int x, int z, int sun, int rain, int grass, int rabbits, int wolves, int hunters)
+        {
+            _cellCord.text = string.Format("X:{0} Y:{1}", x, z);
+            _cellWeather.text = string.Format("Sun:{0} Rain:{1}", sun, rain);
+            _cellGrass.text = string.Format("Grass:" + grass);
+            _cellRabbits.text = string.Format("Rabbits:" + rabbits);
+            _cellWolves.text = string.Format("Wolves:" + wolves);
+            _cellHunters.text = string.Format("Hunters:" + hunters);
         }
 
         public void InitUI()
