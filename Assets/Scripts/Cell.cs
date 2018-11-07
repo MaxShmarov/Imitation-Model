@@ -5,6 +5,7 @@ using LittleWorld.Common;
 using LittleWorld.UI;
 using cakeslice;
 using LittleWorld.Controllers;
+using System.Collections.Generic;
 
 namespace LittleWorld
 {
@@ -12,6 +13,12 @@ namespace LittleWorld
     {
         public int RainyIntensity;
         public int SunnyIntensity;
+    }
+
+    public struct Coord
+    {
+        public int x;
+        public int y;
     }
 
     public class Cell : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -27,13 +34,13 @@ namespace LittleWorld
         private int _rabbitCount = 0;
         private int _wolfCount = 0;
         private int _hunterCount = 0;
+        //private List<Wolf> wolves = new List<Wolf>();
+        //private List<Hunter> hunters = new List<Hunter>();
         private Transform _transform;
         private bool _waterBeside = false;
         private bool _knowNeighbours = false;
         private bool _showCanvas = true;
         private bool _cellFound = false;
-        private bool _wolfKilled = false;
-        private bool _hunterKilled = false;
 
         public Vector2Int _positionInMatrix { get; private set; }
 
@@ -141,39 +148,81 @@ namespace LittleWorld
 
         private void CheckWolfsHunters()
         {
-            _wolfKilled = false;
-            _hunterKilled = false;
-            if (_wolfCount == _hunterCount && _wolfCount != 0 && _hunterCount != 0)
+            bool wolfMoved= false;
+            bool hunterMoved = false;
+            if (_wolfCount != 0 && _hunterCount != 0)
             {
-                _wolfCount = RunFromCell(_wolfCount, true);
-                _hunterCount = RunFromCell(_hunterCount, false);
-            }
-            else if (_wolfCount < _hunterCount && _wolfCount != 0)
-            {
-                _wolfCount = Config.RemoveThing(_wolfCount);
-                _wolfKilled = true;
-                _wolfCount = RunFromCell(_wolfCount, true);
-            }
-            else if (_wolfCount > _hunterCount && _hunterCount != 0)
-            {
-                _hunterCount = Config.RemoveThing(_hunterCount);
-                _hunterKilled = true;
-                _hunterCount = RunFromCell(_hunterCount, false);
-            }
-            if (!_wolfKilled && _hunterCount > 0)
-            {
-                if (_wolfCount == 0 && _rabbitCount == 0)
+
+                if (_wolfCount == _hunterCount)
                 {
+                    hunterMoved = true;
+                    wolfMoved = true;
+                    _wolfCount = RunFromCell(_wolfCount, true);
+                    _hunterCount = RunFromCell(_hunterCount, false);
+                }
+                else if (_wolfCount < _hunterCount)
+                {
+                    _wolfCount = Config.RemoveThing(_wolfCount);
+                    wolfMoved = true;
+                    _wolfCount = RunFromCell(_wolfCount, true);
+                }
+                else
+                {
+                    _hunterCount = Config.RemoveThing(_hunterCount);
+                    hunterMoved = true;
                     _hunterCount = RunFromCell(_hunterCount, false);
                 }
             }
-            if (!_hunterKilled && _wolfCount > 0)
+            //Some things go to other cells
+            if (!wolfMoved && _hunterCount > 0)
             {
-                if (_hunterCount == 0 && _rabbitCount == 0)
+                int rand = UnityEngine.Random.Range(0, _hunterCount + 1);
+                if (_wolfCount == 0 && _rabbitCount == 0)
                 {
-                    _wolfCount = RunFromCell(_wolfCount, true);
+                    _hunterCount -= rand;
+                    _hunterCount += RunFromCell(rand, false);
                 }
             }
+            if (!hunterMoved && _wolfCount > 0)
+            {
+                int rand = UnityEngine.Random.Range(0, _wolfCount + 1);
+                if (_hunterCount == 0 && _rabbitCount == 0)
+                {
+                    _wolfCount -= rand;
+                    _wolfCount += RunFromCell(rand, true);
+                }
+            }
+        }
+
+        private List<Coord> CreateListOfCoords(int x, int y)
+        {
+            List<Coord> coordList = new List<Coord>();
+            Coord coord = new Coord();
+            coord.x = x - 1;
+            coord.y = y - 1;
+            coordList.Add(coord);
+            coord.x = x - 1;
+            coord.y = y;
+            coordList.Add(coord);
+            coord.x = x - 1;
+            coord.y = y + 1;
+            coordList.Add(coord);
+            coord.x = x;
+            coord.y = y + 1;
+            coordList.Add(coord);
+            coord.x = x + 1;
+            coord.y = y + 1;
+            coordList.Add(coord);
+            coord.x = x + 1;
+            coord.y = y;
+            coordList.Add(coord);
+            coord.x = x + 1;
+            coord.y = y - 1;
+            coordList.Add(coord);
+            coord.x = x;
+            coord.y = y - 1;
+            coordList.Add(coord);
+            return coordList;
         }
 
         private int RunFromCell(int count, bool isWolf)
@@ -181,54 +230,30 @@ namespace LittleWorld
             int x = _positionInMatrix.x;
             int y = _positionInMatrix.y;
 
+            List<Coord> coordList = CreateListOfCoords(x, y);
+            List<Coord> randomList = new List<Coord>();
+            System.Random rnd = new System.Random();
+            while (coordList.Count != 0)
+            {
+                Coord temp = coordList[rnd.Next(0, coordList.Count - 1)];
+                coordList.Remove(temp);
+                randomList.Add(temp);
+            }
+
             for (int i = count; i > 0; i--)
             {
-                if (CheckCellForOtherThings(ref count, x + 1, y, isWolf))
+                for (int j = 0; j < randomList.Count; j++)
                 {
-                    continue;
+                    count = CheckCellForOtherThings(count, randomList[j], isWolf);
                 }
-                else if (CheckCellForOtherThings(ref count, x + 1, y, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x, y + 1, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x - 1, y, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x, y - 1, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x + 1, y + 1, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x + 1, y - 1, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x - 1, y + 1, isWolf))
-                {
-                    continue;
-                }
-                else if (CheckCellForOtherThings(ref count, x - 1, y - 1, isWolf))
-                {
-                    continue;
-                }
-                Debug.Log("No way out!: X-" + x + "Y-" + y);
-                break;
             }
             return count;
 
         }
 
-        private bool CheckCellForOtherThings(ref int count, int x, int y, bool isWolf)
+        private int CheckCellForOtherThings(int count, Coord coord, bool isWolf)
         {
-            var cell = GameController.Instance.GetCellByPosition(x, y);
+            var cell = GameController.Instance.GetCellByPosition(coord.x, coord.y);
             if (cell != null)
             {
                 if (cell._environment.Type == EnvironmentType.Field)
@@ -237,25 +262,29 @@ namespace LittleWorld
                     {
                         if (cell._wolfCount < 3)
                         {
-                            cell._wolfCount = Config.AddThing(cell._wolfCount);
-                            count = Config.RemoveThing(count);
-                            cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, cell._rabbitCount, cell._wolfCount, cell._hunterCount);
-                            return true;
+                            if (count > 0)
+                            {
+                                count = Config.RemoveThing(count);
+                                cell._wolfCount = Config.AddThing(cell._wolfCount);
+                                cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, cell._rabbitCount, cell._wolfCount, cell._hunterCount);
+                            }
                         }
                     }
                     else
                     {
                         if (cell._hunterCount < 3)
                         {
-                            cell._hunterCount = Config.AddThing(cell._hunterCount);
-                            count = Config.RemoveThing(count);
-                            cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, cell._rabbitCount, cell._wolfCount, cell._hunterCount);
-                            return true;
+                            if (count > 0)
+                            {
+                                count = Config.RemoveThing(count);
+                                cell._hunterCount = Config.AddThing(cell._hunterCount);
+                                cell._cellUI.UpdateUI(-1, -1, cell._currentGrass, cell._rabbitCount, cell._wolfCount, cell._hunterCount);
+                            }
                         }
                     }
                 }
             }
-            return false;
+            return count;
         }
 
         private void CheckNeighbours()
