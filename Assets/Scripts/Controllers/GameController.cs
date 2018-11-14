@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Diagnostics;
 using Helpers;
 using LittleWorld.Data;
+using Extensions;
 
 namespace LittleWorld.Controllers
 {
@@ -26,9 +27,19 @@ namespace LittleWorld.Controllers
         private Vector2Int _matrixSize;
         private Cell _currentCell;
 
+        private List<Environment> environments;
+        private int _countField = 0;
+        private int _countMountain = 0;
+        private int _countLake = 0;
+        private List<int> env = new List<int>();
+
         private void Start()
         {
             _uiController.InitUI();
+            env.Add(0);
+            env.Add(1);
+            env.Add(2);
+            environments = _worldData.GetEnvironments();
         }
 
         public WorldData GetWorldData()
@@ -67,13 +78,65 @@ namespace LittleWorld.Controllers
 
                     Vector3 cellPos = new Vector3(i * _cellOffset, 0, j * _cellOffset);
                     string cellName = string.Format("Cell [{0}][{1}]", i, j);
-                    Environment environment = _worldData.GetRandomEnvironment();
+                    Environment environment;
+                    if (Config.FieldCount != null && Config.MountainCount != null &&
+                       Config.LakeCount != null)
+                    {
+                        if (Config.FieldCount == 0)
+                        {
+                            env.Remove(0);
+                        }
+                        if (Config.MountainCount == 0)
+                        {
+                            env.Remove(1);
+                        }
+                        if (Config.LakeCount == 0)
+                        {
+                            env.Remove(2);
+                        }
+                        environment = PseudorandomEnvironment();
+                    }
+                    else
+                    {
+                        environment = _worldData.GetRandomEnvironment();
+                    }
                     cell.Init(cellPos, cellName, environment, index);
 
                     _matrix[index.x, index.y] = cell;
                 }
             }
             yield return null;
+        }
+
+        private Environment PseudorandomEnvironment()
+        {
+            int random = 0;
+            random = env.Count > 0 ? env.RandomItem() : Random.Range(0, 3);
+            switch (random)
+            {
+                case 0:
+                    _countField++;
+                    break;
+                case 1:
+                    _countMountain++;
+                    break;
+                case 2:
+                    _countLake++;
+                    break;
+            }
+            if (_countField == Config.FieldCount)
+            {
+                env.Remove(0);
+            }
+            if (_countMountain == Config.MountainCount)
+            {
+                env.Remove(1);
+            }
+            if (_countLake == Config.LakeCount)
+            {
+                env.Remove(2);
+            }
+            return environments[random];
         }
 
         public void ResetWorld()

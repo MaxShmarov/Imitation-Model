@@ -996,13 +996,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 231742677}
   m_TextComponent: {fileID: 662051842}
   m_Placeholder: {fileID: 349435330}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -4793,6 +4793,9 @@ MonoBehaviour:
   _cellRabbits: {fileID: 1819225461}
   _cellWolves: {fileID: 375839266}
   _cellHunters: {fileID: 433908901}
+  _inputField: {fileID: 231742676}
+  _inputMountain: {fileID: 1624102152}
+  _inputLake: {fileID: 1798674744}
   _canvasShow: 1
 --- !u!1 &1268052459
 GameObject:
@@ -5874,13 +5877,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1624102153}
   m_TextComponent: {fileID: 1963508679}
   m_Placeholder: {fileID: 878033403}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
@@ -6576,13 +6579,13 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1798674745}
   m_TextComponent: {fileID: 1059049575}
   m_Placeholder: {fileID: 566148693}
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:

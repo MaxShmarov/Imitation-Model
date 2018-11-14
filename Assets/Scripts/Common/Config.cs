@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace LittleWorld.Common
 {
@@ -8,6 +9,10 @@ namespace LittleWorld.Common
 
         public static int SizeX;
         public static int SizeY;
+
+        public static int? FieldCount;
+        public static int? MountainCount;
+        public static int? LakeCount;
 
         public const int MinCellCount = 1;
         public const int MaxCellCount = 100;
@@ -23,7 +28,21 @@ namespace LittleWorld.Common
 
         public static int GetRandomValue(int min, int max)
         {
-            return Random.Range(min, max);
+            return UnityEngine.Random.Range(min, max);
+        }
+
+        public static void CalculateEnvironment(int percentField, int percentMountain, int percentLake)
+        {
+            int sum = percentField + percentMountain + percentLake;
+            if (sum < 100 || sum > 100)
+            {
+                Debug.LogError("Percents summ incorrect. It must be 100%");
+                return;
+            }
+            int matrixSize = SizeX * SizeY;
+            FieldCount = Mathf.RoundToInt(matrixSize * (percentField / 100f));
+            MountainCount = Mathf.RoundToInt(matrixSize * (percentMountain / 100f));
+            LakeCount = Mathf.RoundToInt(matrixSize * (percentLake / 100f));
         }
 
         public static CurrentWeather GetRandomWeather()

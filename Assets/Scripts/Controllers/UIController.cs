@@ -44,7 +44,12 @@ namespace LittleWorld.Controllers
         private Text _cellWolves;
         [SerializeField]
         private Text _cellHunters;
-
+        [SerializeField]
+        private InputField _inputField;
+        [SerializeField]
+        private InputField _inputMountain;
+        [SerializeField]
+        private InputField _inputLake;
 
         private GameController _gameController;
 
@@ -134,6 +139,13 @@ namespace LittleWorld.Controllers
 
             Config.SizeX = int.Parse(_inputX.text);
             Config.SizeY = int.Parse(_inputZ.text);
+
+            if (_inputField.text != string.Empty && _inputMountain.text != string.Empty
+                && _inputLake.text != string.Empty)
+            {
+                Config.CalculateEnvironment(int.Parse(_inputField.text), int.Parse(_inputMountain.text), int.Parse(_inputLake.text));
+            }
+
 
             if (Config.SizeX < Config.MinCellCount || Config.SizeX > Config.MaxCellCount)
             {
