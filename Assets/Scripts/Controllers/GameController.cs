@@ -150,9 +150,13 @@ namespace LittleWorld.Controllers
             }
         }
 
-        public void NextStep()
+        public void NextStep(int stepCount)
         {
-            EventManager.Trigger(Config.NextStep);
+            while (stepCount > 0)
+            {
+                EventManager.Trigger(Config.NextStep);
+                stepCount--;
+            }           
         }
 
         public Cell GetCellByPosition(int x, int y)

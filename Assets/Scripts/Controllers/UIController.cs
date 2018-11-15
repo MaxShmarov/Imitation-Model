@@ -50,6 +50,8 @@ namespace LittleWorld.Controllers
         private InputField _inputMountain;
         [SerializeField]
         private InputField _inputLake;
+        [SerializeField]
+        private InputField _inputStepCount;
 
         private GameController _gameController;
 
@@ -193,7 +195,23 @@ namespace LittleWorld.Controllers
         {
             if (_gameController == null)
                 return;
-            _gameController.NextStep();
+            if (_inputStepCount.text == string.Empty)
+            {
+                _gameController.NextStep(1);
+            }
+            else
+            {
+                int stepsCount = int.Parse(_inputStepCount.text);
+                if (stepsCount < 1)
+                {
+                    _gameController.NextStep(1);
+                }
+                else
+                {
+                    _gameController.NextStep(stepsCount);
+                }
+            }
+           
         }
 
         public void HideCanvasClickhandler()
