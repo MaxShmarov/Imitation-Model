@@ -35,8 +35,6 @@ namespace LittleWorld
         private int _wolfCount = 0;
         private int _hunterCount = 0;
         private CurrentWeather _currentWeather;
-        //private List<Wolf> wolves = new List<Wolf>();
-        //private List<Hunter> hunters = new List<Hunter>();
         private Transform _transform;
         private bool _waterBeside = false;
         private bool _knowNeighbours = false;

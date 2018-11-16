@@ -26,9 +26,20 @@ namespace LittleWorld.Common
         public const int MinThingCount = 0;
         public const int MaxThingCount = 3;
 
+        public static int AllRabbits = 0;
+        public static int AllWolves = 0;
+        public static int AllHunters = 0;
+
         public static int GetRandomValue(int min, int max)
         {
             return UnityEngine.Random.Range(min, max);
+        }
+
+        public static void ClearLifeState()
+        {
+            AllRabbits = 0;
+            AllWolves = 0;
+            AllHunters = 0;
         }
 
         public static void CalculateEnvironment(int percentField, int percentMountain, int percentLake)

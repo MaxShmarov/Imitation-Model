@@ -52,6 +52,12 @@ namespace LittleWorld.Controllers
         private InputField _inputLake;
         [SerializeField]
         private InputField _inputStepCount;
+        [SerializeField]
+        private Text _allRabbits;
+        [SerializeField]
+        private Text _allWolves;
+        [SerializeField]
+        private Text _allHunters;
 
         private GameController _gameController;
 
@@ -67,16 +73,19 @@ namespace LittleWorld.Controllers
         public void ActiveRabbit()
         {
             EventManager.Trigger("AddRabbits");
+            SetAllStatsPanel();
         }
 
         public void ActiveWolfs()
         {
             EventManager.Trigger("AddWolfs");
+            SetAllStatsPanel();
         }
 
         public void ActiveHunters()
         {
             EventManager.Trigger("AddHunters");
+            SetAllStatsPanel();
         }
 
         public void ClearStats()
@@ -89,9 +98,11 @@ namespace LittleWorld.Controllers
             _cellHunters.text = string.Empty;
         }
 
-        public void SetCoordValue(int x, int z)
+        public void SetAllStatsPanel()
         {
-            _cellCord.text = string.Format("X:{0} Y:{1}", x, z);
+            _allRabbits.text = string.Format("Rabbits:" + Config.AllRabbits);
+            _allWolves.text = string.Format("Wolves:" + Config.AllWolves);
+            _allHunters.text = string.Format("Hunters:" + Config.AllHunters);
         }
 
         public void SetStatsPanel(int x, int z, int sun, int rain, int grass, int rabbits, int wolves, int hunters)
@@ -211,7 +222,7 @@ namespace LittleWorld.Controllers
                     _gameController.NextStep(stepsCount);
                 }
             }
-           
+            SetAllStatsPanel();
         }
 
         public void HideCanvasClickhandler()

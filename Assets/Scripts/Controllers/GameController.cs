@@ -154,9 +154,10 @@ namespace LittleWorld.Controllers
         {
             while (stepCount > 0)
             {
+                Config.ClearLifeState();
                 EventManager.Trigger(Config.NextStep);
                 stepCount--;
-            }           
+            }
         }
 
         public Cell GetCellByPosition(int x, int y)
@@ -166,6 +167,11 @@ namespace LittleWorld.Controllers
                 return _matrix[x, y];
             else
                 return null;
+        }
+
+        public void UpdateStatistics()
+        {
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using LittleWorld.Common;
 
 namespace LittleWorld.UI
 {
@@ -45,6 +46,10 @@ namespace LittleWorld.UI
             _rabbitCount.text = rabbitCount.ToString();
             _wolfCount.text = wolfCount.ToString();
             _hunterCount.text = hunterCount.ToString();
+
+            Config.AllRabbits += rabbitCount;
+            Config.AllWolves += wolfCount;
+            Config.AllHunters += hunterCount;
 
             if (sunIntensity != -1 || rainIntensity != -1)
             {
@@ -152,7 +157,6 @@ namespace LittleWorld.UI
                     _hunterIcon.fillAmount = 0f;
                     break;
             }
-
         }
     }
 }
