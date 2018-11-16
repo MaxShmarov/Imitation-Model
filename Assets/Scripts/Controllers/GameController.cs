@@ -33,6 +33,16 @@ namespace LittleWorld.Controllers
         private int _countLake = 0;
         private List<int> env = new List<int>();
 
+        private List<int> _rabbits = new List<int>();
+        private List<int> _wolves = new List<int>();
+        private List<int> _hunters = new List<int>();
+        private int _maxRabbits = 0;
+        private int _maxWolves = 0;
+        private int _maxHunters = 0;
+        private int _minRabbits = 0;
+        private int _minWolves = 0;
+        private int _minHunters = 0;
+
         private void Start()
         {
             _uiController.InitUI();
@@ -40,6 +50,27 @@ namespace LittleWorld.Controllers
             env.Add(1);
             env.Add(2);
             environments = _worldData.GetEnvironments();
+        }
+
+        public void SetMinMaxRabbits(int startState)
+        {
+            _minRabbits = startState;
+            _maxRabbits = startState;
+            UpdateStatistics();
+        }
+
+        public void SetMinMaxWolves(int startState)
+        {
+            _minWolves = startState;
+            _maxWolves = startState;
+            UpdateStatistics();
+        }
+
+        public void SetMinMaxHunters(int startState)
+        {
+            _minHunters = startState;
+            _maxHunters = startState;
+            UpdateStatistics();
         }
 
         public WorldData GetWorldData()
@@ -156,8 +187,11 @@ namespace LittleWorld.Controllers
             {
                 Config.ClearLifeState();
                 EventManager.Trigger(Config.NextStep);
+                CompareValues();
+                AddToLists();
                 stepCount--;
             }
+            UpdateStatistics();
         }
 
         public Cell GetCellByPosition(int x, int y)
@@ -169,9 +203,73 @@ namespace LittleWorld.Controllers
                 return null;
         }
 
+        private void AddToLists()
+        {
+            if (Config.AllRabbits != 0)
+            {
+                _rabbits.Add(Config.AllRabbits);
+            }
+            if (Config.AllWolves != 0)
+            {
+                _wolves.Add(Config.AllWolves);
+            }
+            if (Config.AllHunters != 0)
+            {
+                _hunters.Add(Config.AllHunters);
+            }
+        }
+
+        private void CompareValues()
+        {
+            Vector2Int maxMin = Vector2Int.zero;
+            maxMin = Comparsion(_minRabbits, _maxRabbits, Config.AllRabbits);
+            _maxRabbits = maxMin.x;
+            _minRabbits = maxMin.y;
+            maxMin = Comparsion(_minWolves, _maxWolves, Config.AllWolves);
+            _maxWolves = maxMin.x;
+            _minWolves = maxMin.y;
+            maxMin = Comparsion(_minHunters, _maxHunters, Config.AllHunters);
+            _maxHunters = maxMin.x;
+            _minHunters = maxMin.y;
+        }
+
+        private Vector2Int Comparsion(int min, int max, int cfg)
+        {
+            Vector2Int maxMin = Vector2Int.zero;
+            maxMin.x = cfg > max ? cfg : max;
+            maxMin.y = cfg < min ? cfg : min;
+            return maxMin;
+        }
+
+        private Vector3Int AverageCreatures()
+        {
+            Vector3Int average = Vector3Int.zero;
+            average.x = Average(_rabbits);
+            average.y = Average(_wolves);
+            average.z = Average(_hunters);
+            return average;
+        }
+
+        private int Average(List<int> creatures)
+        {
+            if (creatures.Count > 0)
+            {
+                int summ = 0;
+                foreach (int creature in creatures)
+                {
+                    summ += creature;
+                }
+                return summ / creatures.Count;
+            }
+            return 0;
+        }
+
         public void UpdateStatistics()
         {
-
+            Vector3Int average = AverageCreatures();
+            Vector3Int min = new Vector3Int(_minRabbits, _minWolves, _minHunters);
+            Vector3Int max = new Vector3Int(_maxRabbits, _maxWolves, _maxHunters);
+            _uiController.SeMinMaxAvgStatsPanel(average, min, max);
         }
     }
 }

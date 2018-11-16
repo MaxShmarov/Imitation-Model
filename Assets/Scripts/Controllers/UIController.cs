@@ -33,6 +33,8 @@ namespace LittleWorld.Controllers
         [SerializeField]
         private GameObject _gameUI;
         [SerializeField]
+        private GameObject _minMaxPanel;
+        [SerializeField]
         private Text _cellCord;
         [SerializeField]
         private Text _cellWeather;
@@ -58,6 +60,25 @@ namespace LittleWorld.Controllers
         private Text _allWolves;
         [SerializeField]
         private Text _allHunters;
+        [SerializeField]
+        private Text _minRabbits;
+        [SerializeField]
+        private Text _maxRabbits;
+        [SerializeField]
+        private Text _avgRabbits;
+        [SerializeField]
+        private Text _minWolves;
+        [SerializeField]
+        private Text _maxWolves;
+        [SerializeField]
+        private Text _avgWolves;
+        [SerializeField]
+        private Text _minHunters;
+        [SerializeField]
+        private Text _maxHunters;
+        [SerializeField]
+        private Text _avgHunters;
+
 
         private GameController _gameController;
 
@@ -73,18 +94,21 @@ namespace LittleWorld.Controllers
         public void ActiveRabbit()
         {
             EventManager.Trigger("AddRabbits");
+            GameController.Instance.SetMinMaxRabbits(Config.AllRabbits);
             SetAllStatsPanel();
         }
 
         public void ActiveWolfs()
         {
             EventManager.Trigger("AddWolfs");
+            GameController.Instance.SetMinMaxWolves(Config.AllWolves);
             SetAllStatsPanel();
         }
 
         public void ActiveHunters()
         {
             EventManager.Trigger("AddHunters");
+            GameController.Instance.SetMinMaxHunters(Config.AllHunters);
             SetAllStatsPanel();
         }
 
@@ -103,6 +127,19 @@ namespace LittleWorld.Controllers
             _allRabbits.text = string.Format("Rabbits:" + Config.AllRabbits);
             _allWolves.text = string.Format("Wolves:" + Config.AllWolves);
             _allHunters.text = string.Format("Hunters:" + Config.AllHunters);
+        }
+
+        public void SeMinMaxAvgStatsPanel(Vector3Int avg, Vector3Int min, Vector3Int max)
+        {
+            _minRabbits.text = string.Format("Min:" + min.x);
+            _maxRabbits.text = string.Format("Max:" + max.x);
+            _avgRabbits.text = string.Format("Avg:" + avg.x);
+            _minWolves.text = string.Format("Min:" + min.y);
+            _maxWolves.text = string.Format("Max:" + max.y);
+            _avgWolves.text = string.Format("Avg:" + avg.y);
+            _minHunters.text = string.Format("Min:" + min.z);
+            _maxHunters.text = string.Format("Max:" + max.z);
+            _avgHunters.text = string.Format("Avg:" + avg.z);
         }
 
         public void SetStatsPanel(int x, int z, int sun, int rain, int grass, int rabbits, int wolves, int hunters)
@@ -200,6 +237,7 @@ namespace LittleWorld.Controllers
             _background.gameObject.SetActive(enabled);
             _inputPanel.gameObject.SetActive(enabled);
             _gameUI.SetActive(!enabled);
+            _minMaxPanel.SetActive(!enabled);
         }
 
         public void NextStepClickHandler()
