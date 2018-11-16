@@ -55,6 +55,12 @@ namespace LittleWorld.Controllers
         [SerializeField]
         private InputField _inputStepCount;
         [SerializeField]
+        private InputField _inputRabbitsCount;
+        [SerializeField]
+        private InputField _inputWolvesCount;
+        [SerializeField]
+        private InputField _inputHuntersCount;
+        [SerializeField]
         private Text _allRabbits;
         [SerializeField]
         private Text _allWolves;
@@ -93,21 +99,66 @@ namespace LittleWorld.Controllers
 
         public void ActiveRabbit()
         {
-            EventManager.Trigger("AddRabbits");
+            Config.ClearAddedCreatures();
+            if (_inputRabbitsCount.text == string.Empty)
+            {
+                EventManager.Trigger("AddRabbits");
+            }
+            else
+            {
+                int count = int.Parse(_inputRabbitsCount.text);
+                if (count <= 0)
+                {
+                    return;
+                }
+                Config.SetRabbits = count;
+                EventManager.Trigger("AddCurrentRabbits");
+            }
+            GameController.Instance.CountCreatures();
             GameController.Instance.SetMinMaxRabbits(Config.AllRabbits);
             SetAllStatsPanel();
         }
 
         public void ActiveWolfs()
         {
-            EventManager.Trigger("AddWolfs");
+            Config.ClearAddedCreatures();
+            if (_inputWolvesCount.text == string.Empty)
+            {
+                EventManager.Trigger("AddWolves");
+            }
+            else
+            {
+                int count = int.Parse(_inputWolvesCount.text);
+                if (count <= 0)
+                {
+                    return;
+                }
+                Config.SetWolves = count;
+                EventManager.Trigger("AddCurrentWolves");
+            }
+            GameController.Instance.CountCreatures();
             GameController.Instance.SetMinMaxWolves(Config.AllWolves);
             SetAllStatsPanel();
         }
 
         public void ActiveHunters()
         {
-            EventManager.Trigger("AddHunters");
+            Config.ClearAddedCreatures();
+            if (_inputHuntersCount.text == string.Empty)
+            {
+                EventManager.Trigger("AddHunters");
+            }
+            else
+            {
+                int count = int.Parse(_inputHuntersCount.text);
+                if (count <= 0)
+                {
+                    return;
+                }
+                Config.SetHunters = count;
+                EventManager.Trigger("AddCurrentHunters");
+            }
+            GameController.Instance.CountCreatures();
             GameController.Instance.SetMinMaxHunters(Config.AllHunters);
             SetAllStatsPanel();
         }
@@ -217,6 +268,8 @@ namespace LittleWorld.Controllers
         public void BackButtonClickHandler()
         {
             _gameController.ResetWorld();
+            SeMinMaxAvgStatsPanel(Vector3Int.zero, Vector3Int.zero, Vector3Int.zero);
+            SetAllStatsPanel();
             InitUI();
         }
 
@@ -242,6 +295,7 @@ namespace LittleWorld.Controllers
 
         public void NextStepClickHandler()
         {
+
             if (_gameController == null)
                 return;
             if (_inputStepCount.text == string.Empty)
@@ -260,6 +314,7 @@ namespace LittleWorld.Controllers
                     _gameController.NextStep(stepsCount);
                 }
             }
+            GameController.Instance.CountCreatures();
             SetAllStatsPanel();
         }
 

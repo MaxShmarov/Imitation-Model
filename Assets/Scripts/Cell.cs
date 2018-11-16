@@ -48,8 +48,11 @@ namespace LittleWorld
             EventManager.StartListening(Config.NextStep, UpdateCellVariables);
             EventManager<bool>.StartListening("CanvasShow", ShowCanvas);
             EventManager.StartListening("AddRabbits", AddRabbitsClickHandler);
-            EventManager.StartListening("AddWolfs", AddWolfsClickHandler);
+            EventManager.StartListening("AddWolves", AddWolvesClickHandler);
             EventManager.StartListening("AddHunters", AddHuntersClickHandler);
+            EventManager.StartListening("AddCurrentRabbits", AddRabbits);
+            EventManager.StartListening("AddCurrentWolfs", AddWolves);
+            EventManager.StartListening("AddCurrentHunters", AddHunters);
         }
 
         private void OnDisable()
@@ -57,17 +60,151 @@ namespace LittleWorld
             EventManager.StopListening(Config.NextStep, UpdateCellVariables);
             EventManager<bool>.StopListening("CanvasShow", ShowCanvas);
             EventManager.StopListening("AddRabbits", AddRabbitsClickHandler);
-            EventManager.StopListening("AddWolfs", AddWolfsClickHandler);
+            EventManager.StopListening("AddWolves", AddWolvesClickHandler);
             EventManager.StopListening("AddHunters", AddHuntersClickHandler);
+            EventManager.StopListening("AddCurrentRabbits", AddRabbits);
+            EventManager.StopListening("AddCurrentWolfs", AddWolves);
+            EventManager.StopListening("AddCurrentHunters", AddHunters);
         }
 
-        private void AddRabbitsClickHandler()
+        public Vector3Int GetCreatures()
+        {
+            return new Vector3Int(_rabbitCount, _wolfCount, _hunterCount);
+        }
+
+        private void AddRabbits()
+        {
+            if (_rabbitCount == 3)
+            {
+                return;
+            }
+            if (Config.SetRabbits > 0)
+            {
+                if (_environment.Type == EnvironmentType.Field)
+                {
+                    if (Config.SetRabbits <= 3)
+                    {
+                        _rabbitCount += Config.SetRabbits;
+                        if (_rabbitCount > 3)
+                        {
+                            Config.SetRabbits = _rabbitCount - 3;
+                            _rabbitCount = 3;
+                        }
+                        else
+                        {
+                            Config.SetRabbits = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (_rabbitCount > 0)
+                        {
+                            int minus = 3 - _rabbitCount;
+                            _rabbitCount = 3;
+                            Config.SetRabbits -= minus;
+                        }
+                        else
+                        {
+                            _rabbitCount = 3;
+                            Config.SetRabbits -= _rabbitCount;
+                        }
+                    }
+                }
+            }
+            _cellUI.UpdateUI(-1, -1, _currentGrass, _rabbitCount, _wolfCount, _hunterCount);
+        }
+
+        private void AddWolves()
+        {
+            if (_wolfCount == 3)
+            {
+                return;
+            }
+            if (Config.SetWolves > 0)
+            {
+                if (_environment.Type == EnvironmentType.Field)
+                {
+                    if (Config.SetWolves <= 3)
+                    {
+                        _wolfCount += Config.SetWolves;
+                        if (_wolfCount > 3)
+                        {
+                            Config.SetWolves = _wolfCount - 3;
+                            _wolfCount = 3;
+                        }
+                        else
+                        {
+                            Config.SetWolves = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (_wolfCount > 0)
+                        {
+                            int minus = 3 - _wolfCount;
+                            _wolfCount = 3;
+                            Config.SetWolves -= minus;
+                        }
+                        else
+                        {
+                            _wolfCount = 3;
+                            Config.SetWolves -= _wolfCount;
+                        }
+                    }
+                }
+            }
+            _cellUI.UpdateUI(-1, -1, _currentGrass, _rabbitCount, _wolfCount, _hunterCount);
+        }
+
+        private void AddHunters()
+        {
+            if (_hunterCount == 3)
+            {
+                return;
+            }
+            if (Config.SetHunters > 0)
+            {
+                if (_environment.Type == EnvironmentType.Field)
+                {
+                    if (Config.SetHunters <= 3)
+                    {
+                        _hunterCount += Config.SetHunters;
+                        if (_hunterCount > 3)
+                        {
+                            Config.SetHunters = _hunterCount - 3;
+                            _hunterCount = 3;
+                        }
+                        else
+                        {
+                            Config.SetHunters = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (_hunterCount > 0)
+                        {
+                            int minus = 3 - _hunterCount;
+                            _hunterCount = 3;
+                            Config.SetHunters -= minus;
+                        }
+                        else
+                        {
+                            _hunterCount = 3;
+                            Config.SetHunters -= _hunterCount;
+                        }
+                    }
+                }
+            }
+            _cellUI.UpdateUI(-1, -1, _currentGrass, _rabbitCount, _wolfCount, _hunterCount);
+        }
+
+          private void AddRabbitsClickHandler()
         {
             _rabbitCount = GetRandomCount();
             _cellUI.UpdateUI(-1, -1, _currentGrass, _rabbitCount, _wolfCount, _hunterCount);
         }
 
-        private void AddWolfsClickHandler()
+        private void AddWolvesClickHandler()
         {
             _wolfCount = GetRandomCount();
             _cellUI.UpdateUI(-1, -1, _currentGrass, _rabbitCount, _wolfCount, _hunterCount);

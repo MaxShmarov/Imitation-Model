@@ -97,6 +97,26 @@ namespace LittleWorld.Controllers
             StartCoroutine("GenerateGrid");
         }
 
+        public void CountCreatures()
+        {
+            int rabbitsSumm = 0;
+            int wolvesSumm = 0;
+            int huntersSumm = 0;
+            for (int i = 0; i < _matrixSize.x; i++)
+            {
+                for (int j = 0; j < _matrixSize.y; j++)
+                {
+                    Vector3Int creatures = _matrix[i, j].GetComponent<Cell>().GetCreatures();
+                    rabbitsSumm += creatures.x;
+                    wolvesSumm += creatures.y;
+                    huntersSumm += creatures.z;
+                }
+            }
+            Config.AllRabbits = rabbitsSumm;
+            Config.AllWolves = wolvesSumm;
+            Config.AllHunters = huntersSumm;
+        }
+
         private IEnumerator GenerateGrid()
         {                      
             for (int i = 0; i < _matrixSize.x; i++)
@@ -179,13 +199,13 @@ namespace LittleWorld.Controllers
                     Destroy(_matrix[i, j].gameObject);
                 }
             }
+            Config.ClearLifeState();
         }
 
         public void NextStep(int stepCount)
         {
             while (stepCount > 0)
             {
-                Config.ClearLifeState();
                 EventManager.Trigger(Config.NextStep);
                 CompareValues();
                 AddToLists();

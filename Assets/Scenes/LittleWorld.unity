@@ -5528,6 +5528,9 @@ MonoBehaviour:
   _inputMountain: {fileID: 1624102152}
   _inputLake: {fileID: 1798674744}
   _inputStepCount: {fileID: 1763655390}
+  _inputRabbitsCount: {fileID: 1104833819}
+  _inputWolvesCount: {fileID: 1613332331}
+  _inputHuntersCount: {fileID: 1158183249}
   _allRabbits: {fileID: 1256698416}
   _allWolves: {fileID: 233405242}
   _allHunters: {fileID: 2076128325}

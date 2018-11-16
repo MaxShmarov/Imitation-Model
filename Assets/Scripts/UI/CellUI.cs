@@ -47,10 +47,6 @@ namespace LittleWorld.UI
             _wolfCount.text = wolfCount.ToString();
             _hunterCount.text = hunterCount.ToString();
 
-            Config.AllRabbits += rabbitCount;
-            Config.AllWolves += wolfCount;
-            Config.AllHunters += hunterCount;
-
             if (sunIntensity != -1 || rainIntensity != -1)
             {
                 _sunIntensity.text = sunIntensity.ToString();

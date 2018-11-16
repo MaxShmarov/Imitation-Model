@@ -30,6 +30,10 @@ namespace LittleWorld.Common
         public static int AllWolves = 0;
         public static int AllHunters = 0;
 
+        public static int SetRabbits = 0;
+        public static int SetWolves = 0;
+        public static int SetHunters = 0;
+
         public static int GetRandomValue(int min, int max)
         {
             return UnityEngine.Random.Range(min, max);
@@ -40,6 +44,14 @@ namespace LittleWorld.Common
             AllRabbits = 0;
             AllWolves = 0;
             AllHunters = 0;
+            ClearAddedCreatures();
+        }
+
+        public static void ClearAddedCreatures()
+        {
+            SetRabbits = 0;
+            SetWolves = 0;
+            SetHunters = 0;
         }
 
         public static void CalculateEnvironment(int percentField, int percentMountain, int percentLake)
